@@ -1,11 +1,2 @@
-fdsfsfs
-fds
-after create version1
-fas
-f
-as
-fs
-d
-commit agaidnndnnd
-5551
-333333333333333333333
+the release folder always for release using.
+the branch folder you can create many.
