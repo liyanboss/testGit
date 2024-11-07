@@ -1,4 +1,4 @@
-package com.pkmj.robot.utils;
+package com.cccj.robot.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,3 +28,7 @@ public class CollectionUtils {
     }
 
 }
+
+
+// 秒杀排列组合（下）————组合篇   https://blog.csdn.net/zmazon/article/details/8315418
+
