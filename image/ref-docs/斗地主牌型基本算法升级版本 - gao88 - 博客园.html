@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/gao88/p/11371439.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height: 80vh; --cnb-code-bg: rgb(245, 245, 245); --cnb-code-font-size: 12px; --cnb-code-color: rgb(68, 68, 68);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="keywords" content="棋牌">
+    <meta name="description" content="好久没更新博客了，前段时间和朋友一起开了一个公司&amp;#160;做APP，最后失败了。现在又开始做棋牌游戏了，最近在看网狐的源码，发现里面斗地主的基本算法太强大了，现在想想我原来的算法简直是弱爆了，分享一下&amp;#160;希望能对你有一点点帮助。以下主要涉及到判断牌型，牌型大小比较2块，如果你想了解更多关于">
+    <meta property="og:description" content="好久没更新博客了，前段时间和朋友一起开了一个公司&amp;#160;做APP，最后失败了。现在又开始做棋牌游戏了，最近在看网狐的源码，发现里面斗地主的基本算法太强大了，现在想想我原来的算法简直是弱爆了，分享一下&amp;#160;希望能对你有一点点帮助。以下主要涉及到判断牌型，牌型大小比较2块，如果你想了解更多关于">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>斗地主牌型基本算法升级版本 - gao88 - 博客园</title>
+    <link rel="canonical" href="https://www.cnblogs.com/gao88/p/11371439.html">
+    <link rel="shortcut icon" id="favicon" href="https://assets.cnblogs.com/favicon.svg?v=2" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/bundle-blacklowkey.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/cnblogs.css">
+    
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/bundle-blacklowkey-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/gao88/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/gao88/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/gao88/wlwmanifest.xml">
+    <script type="text/javascript" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/encoder.js.download"></script><script>
+        var currentBlogId = 350242;
+        var currentBlogApp = 'gao88';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'BlackLowKey';
+        var visitorUserId = '';
+        var hasCustomScript = false;
+        window.cb_enable_mathjax = false;
+        window.mathEngine = 0;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;
+    </script>
+        <script>
+            window.currentPostId = 11371439;
+            window.currentPostDateAdded = '2019-08-18 09:19';
+        </script>
+    <script src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/jquery-3.3.1.min.js.download"></script>
+    <script src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/blog-common.min.js.download"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/highlight.min.js.download" type="text/javascript" async=""></script>
+    
+<meta property="og:image" content="https://assets.cnblogs.com/logo_square.png"></head>
+<body class="skin-blacklowkey has-navbar">
+    <a name="top"></a>
+        <div id="imagebar" class="imagebar-mobile imagebar-text-mobile formobile">
+                <a href="https://market.cnblogs.com/" onclick="countCreativeClicks(&#39;M2-阿里云-云大使&#39;)" rel="nofollow">
+                    <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/35695-20241019093016581-1225084958.jpg" alt="" onload="countCreativeImpressionsOnMobile(&#39;M2-阿里云-云大使&#39;)">
+                    <span id="m2_impression" style="display:none"></span>
+                </a>
+        </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                    <li><a href="https://www.cnblogs.com/cmt/p/18500368">众包</a></li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li><a href="https://www.cnblogs.com/cmt/p/18341478">赞助商</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;gao88&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/gao88/"><img id="blogLogo" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/gao88">把一件事做到极致</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/gao88/">
+首页</a>
+</li>
+<li>
+
+
+</li>
+<li>
+</li>
+<li>
+
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 221&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 0&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 405312">
+40万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/gao88/p/11371439.html" title="发布于 2019-08-18 09:19">
+    <span role="heading" aria-level="2">斗地主牌型基本算法升级版本</span>
+    
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body blogpost-body-html">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 好久没更新博客了，前段时间和朋友一起开了一个公司&nbsp;做APP，最后失败了。现在又开始做棋牌游戏了，最近在看网狐的源码，发现里面斗地主的基本算法太强大了，现在想想我原来的算法简直是弱爆了，分享一下&nbsp;希望能对你有一点点帮助。以下主要涉及到判断牌型，牌型大小比较2块，如果你想了解更多关于棋牌游戏的东西请访问我的棋牌游戏专栏<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+大家写过游戏都会发现，每一种游戏牌的组成类型不一样的，比如斗地主判断牌型，和德州判断牌型就不一样，最近写德州扑克游戏发现其实所有判断牌型的算法都是一样的。<br>
+挑出牌出4张，3张，2张，1张出现的次数，然后各自组合看能出什么样的牌型<br>
+，最后就能确定下来具体的牌型。下面是具体的代码实现。。。。<br>
+一．判断牌型<br>
+定义一个结构来表示每张相同牌的信息。</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">分析结构</span>
+<span style="color: rgba(0, 0, 0, 1)">structtagAnalyseResult
+{
+    BYTE                         cbFourCount;                      </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">四张数目</span>
+    BYTE                         cbThreeCount;                     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">三张数目</span>
+    BYTE                         cbDoubleCount;                    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">两张数目</span>
+    BYTE                         cbSignedCount;                    <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">单张数目</span>
+    BYTE                         cbFourCardData[MAX_COUNT];        <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">四张克</span>
+    BYTE                         cbThreeCardData[MAX_COUNT];       <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">三张扑克</span>
+    BYTE                         cbDoubleCardData[MAX_COUNT];      <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">两张扑克</span>
+    BYTE                         cbSignedCardData[MAX_COUNT];      <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">单张扑克</span>
+};</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br>
+当我们需要判断牌型的时候，先分析牌把对应的数据存放到上面的结构体。然后根据不同牌型的规则来判断即可。主要通过下面2个函数.话不多说直接上源代码：<br>
+1、分析扑克（参数:1将要出牌的数据，出牌的张数,out存放分析的结构体）</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 0, 255, 1)">void</span> CGameLogic::AnalysebCardData(constBYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult &amp;<span style="color: rgba(0, 0, 0, 1)"> AnalyseResult)
+{
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置结果</span>
+         ZeroMemory(&amp;AnalyseResult,<span style="color: rgba(0, 0, 255, 1)">sizeof</span><span style="color: rgba(0, 0, 0, 1)">(AnalyseResult));
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">扑克分析</span>
+         <span style="color: rgba(0, 0, 255, 1)">for</span>(BYTE i=<span style="color: rgba(128, 0, 128, 1)">0</span>;i&lt;cbCardCount;i++<span style="color: rgba(0, 0, 0, 1)">)
+         {
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">变量定义</span>
+                   BYTE cbSameCount=<span style="color: rgba(128, 0, 128, 1)">1</span>,cbCardValueTemp=<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">;
+                   BYTE cbLogicValue</span>=<span style="color: rgba(0, 0, 0, 1)">GetCardLogicValue(cbCardData[i]);
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">搜索同牌</span>
+                   <span style="color: rgba(0, 0, 255, 1)">for</span>(BYTE j=i+<span style="color: rgba(128, 0, 128, 1)">1</span>;j&lt;cbCardCount;j++<span style="color: rgba(0, 0, 0, 1)">)
+                   {
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取扑克</span>
+                            <span style="color: rgba(0, 0, 255, 1)">if</span>(GetCardLogicValue(cbCardData[j])!=cbLogicValue) <span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置变量</span>
+                            cbSameCount++<span style="color: rgba(0, 0, 0, 1)">;
+                   }
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置结果</span>
+                   <span style="color: rgba(0, 0, 255, 1)">switch</span><span style="color: rgba(0, 0, 0, 1)">(cbSameCount)
+                   {
+                   case1:    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">单张</span>
+<span style="color: rgba(0, 0, 0, 1)">                            {
+                                     BYTE cbIndex</span>=AnalyseResult.cbSignedCount++<span style="color: rgba(0, 0, 0, 1)">;
+                                     AnalyseResult.cbSignedCardData[cbIndex</span>*cbSameCount]=<span style="color: rgba(0, 0, 0, 1)">cbCardData[i];
+                                     </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                            }
+                   case2:    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">两张</span>
+<span style="color: rgba(0, 0, 0, 1)">                            {
+                                     BYTE cbIndex</span>=AnalyseResult.cbDoubleCount++<span style="color: rgba(0, 0, 0, 1)">;
+                                     AnalyseResult.cbDoubleCardData[cbIndex</span>*cbSameCount]=<span style="color: rgba(0, 0, 0, 1)">cbCardData[i];
+                                     AnalyseResult.cbDoubleCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">1</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                            }
+                   case3:    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">三张</span>
+<span style="color: rgba(0, 0, 0, 1)">                            {
+                                     BYTE cbIndex</span>=AnalyseResult.cbThreeCount++<span style="color: rgba(0, 0, 0, 1)">;
+                                     AnalyseResult.cbThreeCardData[cbIndex</span>*cbSameCount]=<span style="color: rgba(0, 0, 0, 1)">cbCardData[i];
+                                     AnalyseResult.cbThreeCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">1</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     AnalyseResult.cbThreeCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">2</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                            }
+                   case4:    </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">四张</span>
+<span style="color: rgba(0, 0, 0, 1)">                            {
+                                     BYTE cbIndex</span>=AnalyseResult.cbFourCount++<span style="color: rgba(0, 0, 0, 1)">;
+                                     AnalyseResult.cbFourCardData[cbIndex</span>*cbSameCount]=<span style="color: rgba(0, 0, 0, 1)">cbCardData[i];
+                                     AnalyseResult.cbFourCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">1</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     AnalyseResult.cbFourCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">2</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     AnalyseResult.cbFourCardData[cbIndex</span>*cbSameCount+<span style="color: rgba(128, 0, 128, 1)">3</span>]=cbCardData[i+<span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     </span><span style="color: rgba(0, 0, 255, 1)">break</span><span style="color: rgba(0, 0, 0, 1)">;
+                            }
+                   }
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">设置索引</span>
+                   i+=cbSameCount-<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">;
+         }
+ 
+         </span><span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)">;
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br>
+2.、获取具体牌的类型&nbsp;（实现原理就是&nbsp;通过出来的张数&nbsp;和相同的牌来组合牌型&nbsp;看是否满足）</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">获取类型</span>
+<span style="color: rgba(0, 0, 0, 1)">BYTE CGameLogic::GetCardType(constBYTE cbCardData[], BYTE cbCardCount)
+{
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">简单牌型</span>
+         <span style="color: rgba(0, 0, 255, 1)">switch</span><span style="color: rgba(0, 0, 0, 1)">(cbCardCount)
+         {
+         case0:      </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">空牌</span>
+<span style="color: rgba(0, 0, 0, 1)">                   {
+                            returnCT_ERROR;
+                   }
+         case1: </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">单牌</span>
+<span style="color: rgba(0, 0, 0, 1)">                   {
+                            returnCT_SINGLE;
+                   }
+         case2:      </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">对牌火箭</span>
+<span style="color: rgba(0, 0, 0, 1)">                   {
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">牌型判断</span>
+                            <span style="color: rgba(0, 0, 255, 1)">if</span>((cbCardData[<span style="color: rgba(128, 0, 128, 1)">0</span>]==<span style="color: rgba(128, 0, 128, 1)">0x4F</span>)&amp;&amp;(cbCardData[<span style="color: rgba(128, 0, 128, 1)">1</span>]==<span style="color: rgba(128, 0, 128, 1)">0x4E</span><span style="color: rgba(0, 0, 0, 1)">))returnCT_MISSILE_CARD;
+                            </span><span style="color: rgba(0, 0, 255, 1)">if</span>(GetCardLogicValue(cbCardData[<span style="color: rgba(128, 0, 128, 1)">0</span>])==GetCardLogicValue(cbCardData[<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">]))returnCT_DOUBLE;
+ 
+                            returnCT_ERROR;
+                   }
+         }
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">分析扑克</span>
+<span style="color: rgba(0, 0, 0, 1)">         tagAnalyseResult AnalyseResult;
+         AnalysebCardData(cbCardData,cbCardCount,AnalyseResult);
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">四牌判断</span>
+         <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbFourCount&gt;<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+         {
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">牌型判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbFourCount==<span style="color: rgba(128, 0, 128, 1)">1</span>)&amp;&amp;(cbCardCount==<span style="color: rgba(128, 0, 128, 1)">4</span><span style="color: rgba(0, 0, 0, 1)">))returnCT_BOMB_CARD;
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">       if((AnalyseResult.cbFourCount==1)&amp;&amp;(AnalyseResult.cbSignedCount==2)&amp;&amp;(cbCardCount==6))return CT_FOUR_LINE_TAKE_ONE;</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbFourCount==<span style="color: rgba(128, 0, 128, 1)">1</span>)&amp;&amp;(AnalyseResult.cbSignedCount==<span style="color: rgba(128, 0, 128, 1)">2</span>)&amp;&amp;(cbCardCount==<span style="color: rgba(128, 0, 128, 1)">6</span><span style="color: rgba(0, 0, 0, 1)">))returnCT_FOUR_LINE_TAKE_ONE;
+                   </span><span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbFourCount==<span style="color: rgba(128, 0, 128, 1)">1</span>)&amp;&amp;(AnalyseResult.cbDoubleCount==<span style="color: rgba(128, 0, 128, 1)">2</span>)&amp;&amp;(cbCardCount==<span style="color: rgba(128, 0, 128, 1)">8</span><span style="color: rgba(0, 0, 0, 1)">))returnCT_FOUR_LINE_TAKE_TWO;
+ 
+                   returnCT_ERROR;
+         }
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">三牌判断</span>
+         <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbThreeCount&gt;<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">)
+         {
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">三条类型</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbThreeCount==<span style="color: rgba(128, 0, 128, 1)">1</span>&amp;&amp; cbCardCount==<span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">) returnCT_THREE ;
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">连牌判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbThreeCount&gt;<span style="color: rgba(128, 0, 128, 1)">1</span><span style="color: rgba(0, 0, 0, 1)">)
+                   {
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">变量定义</span>
+                            BYTE cbCardData=AnalyseResult.cbThreeCardData[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">];
+                            BYTE cbFirstLogicValue</span>=<span style="color: rgba(0, 0, 0, 1)">GetCardLogicValue(cbCardData);
+ 
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">错误过虑</span>
+                            <span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue&gt;=<span style="color: rgba(128, 0, 128, 1)">15</span>) <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> CT_ERROR;
+ 
+                            </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">连牌判断</span>
+                            <span style="color: rgba(0, 0, 255, 1)">for</span>(BYTE i=<span style="color: rgba(128, 0, 128, 1)">1</span>;i&lt;AnalyseResult.cbThreeCount;i++<span style="color: rgba(0, 0, 0, 1)">)
+                            {
+                                     BYTE cbCardData</span>=AnalyseResult.cbThreeCardData[i*<span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">];
+                                     </span><span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue!=(GetCardLogicValue(cbCardData)+<span style="color: rgba(0, 0, 0, 1)">i)) returnCT_ERROR;
+                            }
+                   }
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">牌形判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbThreeCount*<span style="color: rgba(128, 0, 128, 1)">3</span>==<span style="color: rgba(0, 0, 0, 1)">cbCardCount) returnCT_THREE_LINE;
+                   </span><span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbThreeCount*<span style="color: rgba(128, 0, 128, 1)">4</span>==<span style="color: rgba(0, 0, 0, 1)">cbCardCount) returnCT_THREE_LINE_TAKE_ONE;
+                   </span><span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbThreeCount*<span style="color: rgba(128, 0, 128, 1)">5</span>==cbCardCount)&amp;&amp;(AnalyseResult.cbDoubleCount==<span style="color: rgba(0, 0, 0, 1)">AnalyseResult.cbThreeCount))returnCT_THREE_LINE_TAKE_TWO;
+ 
+                   returnCT_ERROR;
+         }
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">两张类型</span>
+         <span style="color: rgba(0, 0, 255, 1)">if</span>(AnalyseResult.cbDoubleCount&gt;=<span style="color: rgba(128, 0, 128, 1)">3</span><span style="color: rgba(0, 0, 0, 1)">)
+         {
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">变量定义</span>
+                   BYTE cbCardData=AnalyseResult.cbDoubleCardData[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">];
+                   BYTE cbFirstLogicValue</span>=<span style="color: rgba(0, 0, 0, 1)">GetCardLogicValue(cbCardData);
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">错误过虑</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue&gt;=<span style="color: rgba(128, 0, 128, 1)">15</span>) <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> CT_ERROR;
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">连牌判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">for</span>(BYTE i=<span style="color: rgba(128, 0, 128, 1)">1</span>;i&lt;AnalyseResult.cbDoubleCount;i++<span style="color: rgba(0, 0, 0, 1)">)
+                   {
+                            BYTE cbCardData</span>=AnalyseResult.cbDoubleCardData[i*<span style="color: rgba(128, 0, 128, 1)">2</span><span style="color: rgba(0, 0, 0, 1)">];
+                            </span><span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue!=(GetCardLogicValue(cbCardData)+<span style="color: rgba(0, 0, 0, 1)">i)) returnCT_ERROR;
+                   }
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">二连判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbDoubleCount*<span style="color: rgba(128, 0, 128, 1)">2</span>)==<span style="color: rgba(0, 0, 0, 1)">cbCardCount)returnCT_DOUBLE_LINE;
+ 
+                   returnCT_ERROR;
+         }
+ 
+         </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">单张判断</span>
+         <span style="color: rgba(0, 0, 255, 1)">if</span>((AnalyseResult.cbSignedCount&gt;=<span style="color: rgba(128, 0, 128, 1)">5</span>)&amp;&amp;(AnalyseResult.cbSignedCount==<span style="color: rgba(0, 0, 0, 1)">cbCardCount))
+         {
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">变量定义</span>
+                   BYTE cbCardData=AnalyseResult.cbSignedCardData[<span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">];
+                   BYTE cbFirstLogicValue</span>=<span style="color: rgba(0, 0, 0, 1)">GetCardLogicValue(cbCardData);
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">错误过虑</span>
+                   <span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue&gt;=<span style="color: rgba(128, 0, 128, 1)">15</span>) <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> CT_ERROR;
+ 
+                   </span><span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)">连牌判断</span>
+                   <span style="color: rgba(0, 0, 255, 1)">for</span>(BYTE i=<span style="color: rgba(128, 0, 128, 1)">1</span>;i&lt;AnalyseResult.cbSignedCount;i++<span style="color: rgba(0, 0, 0, 1)">)
+                   {
+                            BYTE cbCardData</span>=<span style="color: rgba(0, 0, 0, 1)">AnalyseResult.cbSignedCardData[i];
+                            </span><span style="color: rgba(0, 0, 255, 1)">if</span>(cbFirstLogicValue!=(GetCardLogicValue(cbCardData)+<span style="color: rgba(0, 0, 0, 1)">i)) returnCT_ERROR;
+                   }
+ 
+                   returnCT_SINGLE_LINE;
+         }
+ 
+         returnCT_ERROR;
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+<div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/gao88/category/1074443.html" target="_blank">棋牌</a>
+</div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(11371439,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;6fc8a781-06f2-e111-aa3f-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_wechat" href="javascript:void(0);" onclick="shareManager.wechatShare()">微信分享</a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/gao88/" target="_blank"><img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/gao88/">gao88</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/gao88/followers/">粉丝 - <span class="follower-count">8</span></a>
+            <a href="https://home.cnblogs.com/u/gao88/followees/">关注 - <span class="following-count">2</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;6fc8a781-06f2-e111-aa3f-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(11371439,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">1</span>
+    </div>
+    <div class="buryit" onclick="votePost(11371439,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+        <div id="vip_tip"><a class="tip" href="https://cnblogs.vip/" target="_blank">升级成为会员</a></div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script>
+</div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/gao88/p/11371418.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/gao88/p/11371418.html" data-featured-image="" title="发布于 2019-08-18 09:04">棋牌游戏座位算法</a>
+    <br>
+    <a href="https://www.cnblogs.com/gao88/p/11410879.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/gao88/p/11410879.html" data-featured-image="" title="发布于 2019-08-26 10:08">golang开发开房间游戏的一种无锁设计</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="1911.9790464051737" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2019-08-18 09:53" aria-expanded="false">2019-08-18 09:19</span>&nbsp;
+<a href="https://www.cnblogs.com/gao88">gao88</a>&nbsp;
+阅读(<span id="post_view_count">2059</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=11371439" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(11371439);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;11371439&#39;, targetLink: &#39;https://www.cnblogs.com/gao88/p/11371439.html&#39;, title: &#39;斗地主牌型基本算法升级版本&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 11371439, cb_entryCreatedDate = '2019-08-18 09:19', cb_postType = 1, cb_postTitle = '斗地主牌型基本算法升级版本';
+    var allowComments = false, cb_blogId = 350242, cb_blogApp = 'gao88', cb_blogUserGuid = '6fc8a781-06f2-e111-aa3f-842b2b196315';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"> 
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="https://www.cnblogs.com/gao88/p/11371439.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/gao88/p/11371439.html#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container">（评论功能已被禁用）</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-UCanCode&#39;})">【推荐】100%开源！大型工业跨平台软件C++源码提供，建模，组态！</a><br><a href="https://click.aliyun.com/m/1000398630/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-金秋云创季&#39;})">【推荐】阿里云金秋云创季：智惠就在双11，200+款云爆品折上再折</a><br><a href="https://click.ctyun.cn/?track=source_bokeyuan-medium_cps-content_se1271149" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-天翼云&#39;})">【推荐】天翼云爆款云服务器2核2G云超值特惠，一口价35元/1年</a><br><a href="https://market.cnblogs.com/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-云大使&#39;})">【推荐】博客园社区专享云产品让利特惠，阿里云新客6.5折上折</a><br><a href="http://ishell.cc/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-IShell&#39;})">【推荐】轻量又高性能的 SSH 工具 IShell：AI 加持，快人一步</a><br></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card">
+            <a href="https://market.cnblogs.com/" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C1-阿里云-云大使&#39;)">
+                <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/35695-20241019062048823-95798004.jpg" onload="countCreativeImpressions(&#39;C1-阿里云-云大使&#39;)" alt="">
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/strick/p/18406625" target="_blank">带团队后的日常思考（十六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/OceanEyes/p/18536237" target="_blank">代码背后的智慧：20条编程感悟</a>
+    <br>
+· <a href="https://www.cnblogs.com/binlovetech/p/18531611" target="_blank">Netty 如何自动探测内存泄露的发生</a>
+    <br>
+· <a href="https://www.cnblogs.com/lmy5215006/p/18529501" target="_blank">.NET Core 泛型底层原理浅谈</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiaoweiyu/p/18531028" target="_blank">解决DDD最大难题-如何划分领域</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://www.cnblogs.com/cmt/p/18457617" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C2-杭云-华为云代理&#39;)">
+                <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/35695-20241011113008248-579795068.jpg" alt="" onload="countCreativeImpressions(&#39;C2-杭云-华为云代理&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/kagol/p/18536386" target="_blank">焕然一新！TinyVue 组件库 UI 大升级，更符合现代的审美！</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/kagol/p/18537677" target="_blank">TinyVue v3.19.0 正式发布！Tree 组件终于支持虚拟滚动啦！UI 也升级啦，更更符合</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/HaneDaCafe/p/18536835" target="_blank">Borůvka 算法</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/tangshiye/p/18538268" target="_blank">权限系统：一文搞懂功能权限、数据权限</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/zhongcx/p/18537619" target="_blank">鸿蒙NEXT开发案例：转盘</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display:none"></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/gao88/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988959.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">C++(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1013117.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">CentOS(21)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1457475.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">cocos creator(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1338545.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">DB(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1018782.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Docker(9)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1341978.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">ElasticSearch(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1336534.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">EOS(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988944.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Go(32)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1623710.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">grpc(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1611309.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">HaProxy(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988909.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">HTTP(10)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1328039.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">IM&amp;Push(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1624804.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">iptables(6)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1296704.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Kubernetes(31)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1428016.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Let`s Encrypt(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988946.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Linux(33)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988960.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Lua(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/995313.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Mac(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1409638.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">MacOS(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1014126.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">mongo(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1444410.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">MY(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1321905.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">MySQL(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1327858.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">NATS(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988969.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Nginx(19)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1359121.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">nodejs(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988962.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">PHP(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1580725.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">React(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1807932.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">TiDB(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1563072.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">tox(4)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1409276.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Ubuntu(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1014524.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">vi(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/988947.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">Windows(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1014228.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">wrk(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1808802.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">zookeeper(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1018047.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">其它(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1074443.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">棋牌(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1351026.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">区块链(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1425064.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">设计模式(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1425086.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">渗透测试(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1599009.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">数值设计(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/gao88/category/998281.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">算法(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1414148.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">网络安全(14)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1472371.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">消息对列(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/gao88/category/1306771.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">运维(2)</a>
+ 
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+
+
+
+<!-- 阅读排行榜 -->
+
+
+<!-- 评论排行榜 -->
+
+
+<!-- 推荐排行榜 -->
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2024 gao88
+<br><span id="poweredby">Powered by .NET 8.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AOXHS93SCdEnLt5HW8VuxSCycKqJs9vfJOF3ImJzv4LrTrAMLOzjsjLbqxTja8eDtnd7f597mhqxkVzH2Uao_WGntBFBGxiwikvr3ULo7WXm1D_Efh065kNtcbp2ZW6wNzJmX0K3_llQjYXZ6UwdiE">
+    <script async="" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-M95P3TTWJZ');
+</script>
+<script defer="" src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/hm.js.download"></script>
+
+
+<div style="z-index: 998; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; flex-direction: column; align-items: center; justify-content: center">
+<div style="background: #fff;padding: 30px; margin: 30px; border-radius: 16px;">
+  <div style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -100px; right: -100px; border-radius: 100px"></div>
+  <div style="text-align: center; font-size: 18px; margin-bottom: 10px;">点击右上角即可分享</div>
+  <img src="./斗地主牌型基本算法升级版本 - gao88 - 博客园_files/35695-20230906145857937-1471873834.gif" alt="微信分享提示">
+</div>   
+    </div><div id="veepn-breach-alert"><template shadowrootmode="open"><style>.breach-popup{font-family:FigtreeVF,sans-serif;position:fixed;z-index:2147483638;-webkit-font-smoothing:antialiased;text-rendering:optimizelegibility;top:0;left:0;right:0;pointer-events:none;padding-inline:16px;height:0;overflow:visible;color:#222e3a}.breach-popup *{box-sizing:border-box}.breach-popup__inner{background-color:#de4558;width:100%;border-radius:16px;margin-inline:auto;pointer-events:all;position:relative;transition:transform .25s ease-in-out,max-width .25s ease-in-out;transform:translateY(16px);max-height:calc(100svh - 80px);display:flex;flex-direction:column}.breach-popup__header{min-height:32px;display:flex;align-items:center;justify-content:space-between;column-gap:16px;padding:4px;cursor:pointer}.breach-popup__close{cursor:pointer;background-color:transparent;border-style:none;outline:none;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;opacity:.5}.breach-popup__wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease-in-out;overflow:hidden}.breach-popup__content{overflow:hidden;opacity:0;transform:translateY(-10px)}.breach-popup--minimize .breach-popup__inner{max-width:485px;transform:translateY(-100%)}.breach-popup--collapse .breach-popup__inner{max-width:485px}.breach-popup--expand .breach-popup__inner{max-width:1120px}.breach-popup--expand .breach-popup__wrap{grid-template-rows:1fr}.breach-popup--expand .breach-popup__content{opacity:1;transform:translateY(0);transition:transform .25s ease-in-out,opacity .25s ease-in-out;transition-delay:.15s}.breach-popup--expand .breach-popup__header{cursor:default}.breach-info{padding:2px;height:100%}.breach-info__inner{padding:22px 22px 0;background-color:#fff;border-bottom-left-radius:15px;border-bottom-right-radius:15px;height:100%;overflow:auto}.breach-info__alert{font-size:24px;line-height:32px;font-weight:700;margin:0}.breach-info__list{margin-top:24px;display:flex;flex-wrap:wrap;gap:24px}@media only screen and (width >= 992px){.breach-info__list{flex-wrap:nowrap}}.breach-info__item{width:100%}.breach-info__item:nth-child(2){max-width:320px}.breach-info__item:nth-child(3){max-width:200px}.breach-info__title{font-size:18px;font-weight:700;line-height:32px;letter-spacing:-.1px;color:#de4558;margin-top:0;margin-bottom:4px}.breach-info__description{font-size:16px;line-height:28px;letter-spacing:-.1px}.breach-info__description ul{margin:0}.breach-info__actions{display:flex;justify-content:center;padding-top:32px;padding-bottom:22px;background-color:#fff;position:sticky;bottom:0}.breach-info__btn{cursor:pointer;border-style:none;outline:none;display:inline-flex;align-items:center;height:48px;padding-inline:20px;border-radius:12px;text-align:center;font-size:16px;font-weight:700;line-height:28px;letter-spacing:-.1px;color:#fff;background-color:#ff6400}.button-expand{position:absolute;bottom:0;left:50%;transform:translate(-50%,100%);z-index:1}.button-expand__pointer{cursor:pointer}.button-expand__alert{pointer-events:none;transition:opacity .25s ease-in-out}.button-expand__arrow{pointer-events:none;transition:transform .25s ease-in-out,opacity .25s ease-in-out;transform-origin:center}.button-expand--minimize .button-expand__arrow,.button-expand--collapse .button-expand__alert,.button-expand--expand .button-expand__alert{opacity:0}.button-expand--expand .button-expand__arrow{transform:rotate(180deg)}.header-collapse{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:8px;font-size:14px;line-height:20px;letter-spacing:-.1px;color:#fff}.header-expand{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:20px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-.1px;color:#fff}</style></template></div><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2-variations");font-weight:100 1000;font-display:swap}</style></body></html>

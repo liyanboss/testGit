@@ -1,0 +1,15 @@
+斗地主牌型基本算法升级版本
+https://www.cnblogs.com/gao88/p/11371439.html
+
+回溯算法解决排列—组合—子集问题
+https://www.cnblogs.com/Jasmine-smi/p/17216483.html
+
+跑得快AI 采用蒙特卡洛算法
+https://github.com/esrrhs/paodekuai_ai/tree/master
+
+斗地主智能（AI）出牌算法
+http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml
+
+斗地主中的顺子算法
+https://juejin.cn/post/6976854628952440868
+

@@ -1,0 +1,740 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta content="360doc" name="classification"><link rel="canonical" href="http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml"><link rel="alternate" media="only screen and (max-width: 640px)" href="https://www.360doc.cn/article/2617151_84917660.html"><meta content="牌,对子,单" name="keywords"><meta content="斗地主智能（AI）出牌算法" name="description"><meta name="mobile-agent" content="format=html5;url=https://www.360doc.cn/article/2617151_84917660.html"><meta content="4 对子（一手牌）：相同点数的两张牌在一起的牌型，比如55。9&lt;y/Wv          2 三条的出牌原则：因为三条出牌可以带一张单牌或一个对子，所以在出三条时需要检测是否有单牌，如果有，则带一张最小的单牌，如果没有，则再检测是否存在对子，如果有，则跟一个最小的对子，如果单牌和对子都没有，则出三条。如果有单牌，但没有足够多的单牌，则检查是否有6连以上的连牌，如果有将连牌的最小张数当作单牌带出。" name="360docabstract"><meta content="www.360doc.com" name="author"><meta name="Referrer" content="origin"><title>
+	斗地主智能（AI）出牌算法
+</title><link rel="stylesheet" type="text/css" href="./斗地主智能（AI）出牌算法_files/newArticle20200630.css"><link href="./斗地主智能（AI）出牌算法_files/newheader2022.css" rel="stylesheet" type="text/css"><script src="./斗地主智能（AI）出牌算法_files/f(4).txt"></script><script src="./斗地主智能（AI）出牌算法_files/f(5).txt"></script><script src="./斗地主智能（AI）出牌算法_files/f(6).txt"></script><script type="text/javascript" src="./斗地主智能（AI）出牌算法_files/EssayforIE120425.js.download"></script><meta http-equiv="origin-trial" content="AlK2UR5SkAlj8jjdEc9p3F3xuFYlF6LYjAML3EOqw1g26eCwWPjdmecULvBH5MVPoqKYrOfPhYVL71xAXI1IBQoAAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="Amm8/NmvvQfhwCib6I7ZsmUxiSCfOxWxHayJwyU1r3gRIItzr7bNQid6O8ZYaE1GSQTa69WwhPC9flq/oYkRBwsAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A9wSqI5i0iwGdf6L1CERNdmsTPgVu44ewj8QxTBYgsv1LCPUVF7YmWOvTappqB1139jAymxUW/RO8zmMqo4zlAAAAACNeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MzY4MTI4MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A+d7vJfYtay4OUbdtRPZA3y7bKQLsxaMEPmxgfhBGqKXNrdkCQeJlUwqa6EBbSfjwFtJWTrWIioXeMW+y8bWAgQAAACTeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MzY4MTI4MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><script async="" src="./斗地主智能（AI）出牌算法_files/ca-pub-6625678643128649"></script><script async="" src="./斗地主智能（AI）出牌算法_files/AGSKWxW0nADq4erloRW7Bx9Wg_jMAcXwNb0AdQO23yWmUsgKuT1w-v0IbG95BysRGDqDy8pz-bl79L6_iAes05DCSfJE1pdSbh3CO5LN7Dx2Pc3yTtVsGahZ5AHCissczs_YT0243q6NFg=="></script><script async="" src="./斗地主智能（AI）出牌算法_files/AGSKWxU2CDq_zcuz1fpP13nRkBYLkilmMb8O_pPx8-i_zUJl0XlLYSo1k6eLSHeRxGiIUEuxvTvGYNZL8URWJlkPa7h1NEdxAsVLwQDb79l2z2Ot4elZ8fszEKbaEOxTHjjDVPUDst0V4A=="></script><script async="" src="./斗地主智能（AI）出牌算法_files/AGSKWxX9v6ps3Y4TV_ZPDfvFQ_3yEVYWG-O6_jvmu18nnVvi32A0aBEf-dYq9s7T4VmKWEFslYJlc5IjM7fCucEP7udZZsCNcmgi0wl_2nOJ81n0B5UHNxwrbUSsO88upe-RRLq8fMcctw=="></script></head>
+<body onmouseup="setDragEnd()" onclick="delAllDiv(event)" class="t_max" aria-hidden="false" style="">
+    
+    <div id="LayerLogin" style="display: none;"></div>
+
+
+
+    <div style="position: absolute; width: 100%; z-index: 1000;">
+        <div class="header" style="background-color: #ffffff;">
+            <div class="header_1">
+                <a href="http://www.360doc.com/" aria-label="home">
+                    <img src="./斗地主智能（AI）出牌算法_files/nlogo.jpg" class="f_left" width="435" height="68" alt="logo"></a>
+                <div class="headsearch">
+                    <div class="zcomdiv">
+                        <input type="text" class="headsearch_inp f_left" value="搜文章  找知识">
+                        <span class="headsearch_btn f_right" id="searchlinkid">搜索</span>
+                    </div>
+                </div>
+                <div class="mylibrary">
+                    <a id="userInfoUrl" href="http://www.360doc.com/login.aspx?reurl=http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml" class="a1">
+                        <div class="h_user">
+                            <img id="divuserinfonew" src="./斗地主智能（AI）出牌算法_files/dingtu.gif">
+                        </div>
+                        我的图书馆
+                    </a>
+                </div>
+                <div class="headmail f_left" style="display: none;">
+                    <p class="h_icon1" id="newMsg"></p>
+                    <span class="h_border"></span>
+                    <ul class="hm_list" id="msgtips">
+                        <li id="msgicon"><a href="http://www.360doc.com/mymsg.aspx?app=2">查看信箱</a></li>
+                        <li id="sysmsgicon"><a href="http://www.360doc.com/mymsg.aspx?app=9">系统消息</a></li>
+                        <li id="sysicon"><a href="http://www.360doc.com/mymsg.aspx?app=4">官方通知</a></li>
+                        <li class="hm_color2" style="background-color: #f4f4f4"><a href="http://www.360doc.com/mymsg.aspx?app=6">设置</a></li>
+                    </ul>
+                </div>
+                <div class="headtalker f_left" style="display: none;">
+                    <p class="h_icon1" id="newDialog"></p>
+                    <span class="h_border"></span>
+                    <ul class="hm_list">
+                        <li id="li1chat"><a href="javascript:void(0)" onclick="initchatnew()">开始对话</a></li>
+                        <li id="li2chat" style="display: none;"><a href="javascript:void(0)" style="color: #141414;">有<span>11</span>人和你对话，<span onclick="initchatnew()" style="color: #4578b4">查看</span>&nbsp;<span onclick="clearinfochat()" style="color: #4578b4">忽略</span></a></li>
+                        <li><a href="http://www.360doc.com/mycontacts.aspx?app=8">历史对话记录</a></li>
+                        <li class="hm_color2" style="background-color: #f4f4f4"><a href="http://www.360doc.com/mycontacts.aspx?app=7">通知设置</a></li>
+                    </ul>
+                </div>
+                <span class="head_bd f_left"></span>
+                <div class="head_pbox f_left">
+                    <i class="indexallbg"></i>
+                    <p>发文章</p>
+                    <div class="d1">
+                        <div class="d1">
+                            <p>发文工具</p>
+                            <div>
+                                <a href="http://www.360doc.com/edit/writeartnew.aspx" target="_blank" class="a1" onclick="imgLog(1, &#39;code=43-14-1-2&#39;)"><i class="indexallbg"></i>
+                                    <p>撰写</p>
+                                </a>
+                                <a href="http://www.360doc.com/helpnew.html" target="_blank" class="a2" onclick="imgLog(1, &#39;code=43-14-1-3&#39;)"><i class="indexallbg"></i>
+                                    <p>网文摘手</p>
+                                </a>
+                                <a href="http://www.360doc.com/edit/docupload.aspx" target="_blank" class="a3" onclick="imgLog(1, &#39;code=43-14-1-4&#39;)"><i class="indexallbg"></i>
+                                    <p>文档</p>
+                                </a>
+                                <a href="javascript:void(0);" class="a10" onclick="imgLog(1, &#39;code=25-15-1-1&#39;)"><i class="indexallbg"></i>
+                                    <p>视频</p>
+                                <span class="new"></span></a>
+                                <a href="http://www.360doc.com/eeg/index.aspx" target="_blank" class="a4" onclick="imgLog(1, &#39;code=43-14-1-5&#39;)"><i class="indexallbg"></i>
+                                    <p>思维导图</p>
+                                </a>
+                                <a href="http://www.360doc.com/myfiles.aspx?app=18" target="_blank" class="a5" onclick="imgLog(1, &#39;code=43-14-1-6&#39;)"><i class="indexallbg"></i>
+                                    <p>随笔</p>
+                                </a>
+                                <a href="http://www.360doc.com/writephoto2.aspx" target="_blank" class="a6" onclick="imgLog(1, &#39;code=43-14-1-7&#39;)"><i class="indexallbg"></i>
+                                    <p>相册</p>
+                                </a>
+                                <a href="http://www.360doc.com/myoriginal.aspx?app=3" target="_blank" class="a7" onclick="imgLog(1, &#39;code=43-14-1-8&#39;)"><i class="indexallbg"></i>
+                                    <p>原创同步助手</p>
+                                </a>
+                                <div class="clearb"></div>
+                            </div>
+                        </div>
+                        <div class="d1">
+                            <p>其他工具</p>
+                            <div>
+                                <a href="http://www.360doc.com/edit/ocrindex.html" target="_blank" class="a8" onclick="ocrImgLog();"><i class="indexallbg"></i><p>图片转文字</p><b></b></a>
+                                <a href="http://www.360doc.com/myfiles.aspx?app=21" target="_blank" class="a9" onclick="imgLog(1, &#39;code=43-14-1-9&#39;)"><i class="indexallbg"></i><p>文件清理</p><b></b></a>
+                                <a href="http://www.360doc.com/pages/ai.html" target="_blank" class="a11"><i class="indexallbg"></i><p>AI助手</p><b></b></a>
+                                <div class="clearb"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="http://www.360doc.com/advice.html" target="_blank" class="head_talk f_left" onclick="imgLog(1, &#39;code=43-14-1-10&#39;)"><i class="indexallbg"></i>
+                    <p>留言交流</p>
+                </a>
+            </div>
+        </div>
+        <div class="arti_type_shadow"></div>
+    </div>
+    <div class="atfixednav" style="display: none;">
+        <div class="anbg"></div>
+        <div class="d1" onclick="$(&#39;#contextmenudivmouseup&#39;).hide();" style="left: 0px;">
+            <a class="fxlogo_ atnavicons" href="http://www.360doc.com/"></a>
+            <div class="fxsearch_" id="fxinput">
+                <div>
+                    <input type="text" value="斗地主智能（AI）出牌算法">
+                </div>
+                <a href="javascript:void(0);">搜索</a>
+            </div>
+
+            <span class="s1 ic5" id="fixedShareArt" title="分享"><a href="javascript:void(0)" onclick="artStatistics(&#39;20-8-2&#39;)" class="atnavicons"><b>分享</b></a>
+                <div class="sharelist_new bdsharebuttonbox" id="fenxiangLayer3" style="display: none;">
+                    <a class="slbg1" href="javascript:void(0);" data-cmd="qzone" onclick="shareStatic.addStatic(&#39;qzone&#39;);artStatistics(&#39;20-8-6&#39;)">QQ空间</a>
+                    <a class="slbg2" href="javascript:void(0);" data-cmd="sqq" onclick="shareStatic.addStatic(&#39;qq&#39;);artStatistics(&#39;20-8-7&#39;)">QQ好友</a>
+                    <a class="slbg3" href="javascript:void(0);" data-cmd="tsina" onclick="shareStatic.addStatic(&#39;sina&#39;);artStatistics(&#39;20-8-8&#39;)">新浪微博</a>
+                    <a class="slbg0" href="javascript:void(0);" onclick="shareWeixin()" id="fixed_weixin">微信</a>
+                    <iframe width="95" height="95" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" allowtransparency="true" class="qr" rel="84917660" style="display: none;" src="./斗地主智能（AI）出牌算法_files/saved_resource(1).html"></iframe>
+
+                </div>
+            </span>
+
+            
+            <span class="s1 ic1" id="fixedLongPic" style="display: none" title="生成长图"><a href="javascript:void(0)" onclick="ArticleLongImgClick(2)" class="atnavicons"><b>生成长图</b></a></span>
+            <span class="s1 ic10" id="fixedWord" style="display: none" title="转Word"><a href="javascript:void(0)" onclick="WordObj.init();addStatisticsNew(&#39;20-37-3-131&#39;);" class="atnavicons"><b>转Word</b></a></span>
+            <span class="s1 ic7" id="fixedPrint" style="display: none" title="打印"><a href="javascript:void(0)" onclick="PrintObj.init();addStatisticsNew(&#39;20-31-1-121&#39;);" class="atnavicons"><b>打印</b></a></span>
+            <span class="s1 ic4" id="fixedArtReading" style="" title="朗读"><a href="javascript:void(0)" onclick="ArticleReadingClick(4);" class="atnavicons"><b>朗读</b></a></span>
+            <span class="s1 ic8" id="fixedFullScreen" style="" title="全屏"><a href="javascript:void(0)" onclick="FullScreenObj.init();addStatisticsNew(&#39;20-30-1-119&#39;);" class="atnavicons"><b>全屏</b></a></span>
+            
+            <span class="s1 ic6" id="fixedEditArt" style="display: none" title="修改"><a href="javascript:void(0)" onclick="document.getElementById(&#39;updateartbtnlink&#39;).click();artStatistics(&#39;20-26-15&#39;);" class="atnavicons"><b>修改</b></a></span>
+
+            <span class="s1 ic2" id="fixedResaveArt" style="" title="转藏"><a href="javascript:void(0)" onclick="SaveArt();artStatistics(&#39;20-26-6&#39;);" class="atnavicons"><b id="resavenum_bar">转藏</b></a><i id="incresave" style="display: none;">+1</i></span>
+        </div>
+    </div>
+    <div style="height: 68px; _height: 0px; width: 100%;"></div>
+
+    <div class="clear360doc"></div>
+
+    <div class="doc360article_content" style="padding-right: 0px; width: 1014px;">
+        <div id="arttopbdad">
+        </div>
+        <p class="clearboth"></p>
+        <div class="a_left" style="width: 704px; height: auto !important;"><div id="floatqrcode_1" class="floatqrcode" style="display: block;"><a class="closer" onclick="imgLog(1, &#39;code=20-40-1-5&#39;);">×</a><div><img src="./斗地主智能（AI）出牌算法_files/gzh3.jpg"></div><p>微信扫一扫关注<br>查看更多精彩文章</p></div><div id="floatqrcode_2" class="floatqrcode wxart_qr" style="display: block;"><a class="closer">×</a><div class="dy"><img src="./斗地主智能（AI）出牌算法_files/84917660_1_2617151_0.jpg"></div><p>微信扫一扫<br>将文章发送给好友</p></div>
+            <div id="bgchange" style="width: 664px;">
+                <div id="printArticle">
+                    <h1 id="titiletext"><span id="GLTitile">斗地主智能（AI）出牌算法</span><i id="ArticleReadingBtn" title="朗读" class="sound" onclick="ArticleReadingClick(1)" style=""><span></span><span></span><span></span><span></span></i></h1>
+                    
+                    <audio id="audioId" width="100" height="100" ontimeupdate="AudioTimeUpdate()"></audio>
+                    
+                    <div class="art_topdata">
+                        <span class="a_username" id="topnickname">&nbsp;<a href="http://www.360doc.com/userhome/2617151" id="savernickname" target="_blank" onclick="artStatistics(&#39;20-7-1&#39;);">Ethan的博客</a>
+                        </span>
+                        
+                        2011-01-08
+                        <span id="articleinfo">
+                            <span id="territory"></span><span id="docsource" class="a_from" style="display: none;">&nbsp;<a href="http://www.ghoffice.com/bbs/read-htm-tid-81039.html" target="_blank" onclick="artStatistics(&#39;20-12&#39;);">来源</a></span><span id="360doc_Readnum">&nbsp;&nbsp;|&nbsp;&nbsp;46517阅读</span><span onclick="ShowSaverUser();artStatistics(&#39;20-13&#39;);" id="360docResaveCount" class="rc__" style="cursor: pointer;">&nbsp;&nbsp;|&nbsp;&nbsp;<span id="360doc_saverNum" style="color: #62a242;">460</span>转藏
+								<span id="360doc_saverUser">
+                                    <div id="sameArtOuter" style="display: none;">
+                                        <div onclick="event.cancelBubble=true;" style="overflow-y: auto; height: 300px; overflow-x: hidden; z-index: 100; right: 0px; margin-top: -10px;" id="sameArt">
+                                        </div>
+                                    </div>
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="bdsharebuttonbox article_data_right">
+                        <div class="fontsize_bgcolor_controler" id="color_div" style="">
+                            <div class="a_bgcolor">
+                                <img src="./斗地主智能（AI）出牌算法_files/bgcolor.jpg">
+                                <div class="a_colorlist">
+                                    <span class="a_color1" onclick="artStatistics(&#39;20-11-1&#39;);addStatisticsFullScreen(1,null,6)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                    <span class="a_color2" onclick="artStatistics(&#39;20-11-2&#39;);addStatisticsFullScreen(1,null,5)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                    <span class="a_color3" onclick="artStatistics(&#39;20-11-3&#39;);addStatisticsFullScreen(1,null,4)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                    <span class="a_color4" onclick="artStatistics(&#39;20-11-4&#39;);addStatisticsFullScreen(1,null,3)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                    <span class="a_color5" onclick="artStatistics(&#39;20-11-5&#39;);addStatisticsFullScreen(1,null,2)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                    <span class="a_color6 cur" onclick="artStatistics(&#39;20-11-6&#39;);addStatisticsFullScreen(1,null,1)">
+                                        <img src="./斗地主智能（AI）出牌算法_files/yes.gif"></span>
+                                </div>
+                            </div>
+                            <div class="a_fontsize">
+                                <img src="./斗地主智能（AI）出牌算法_files/fontSize.jpg">
+                                <div class="fschange">
+                                    <label>
+                                        <input type="radio" name="font_Size" id="" value="18" onclick="artStatistics(&#39;20-10-1&#39;); addStatisticsFullScreen(1, 1, null)">大
+                                    </label>
+                                    &nbsp;
+					                <label>
+                                        <input type="radio" name="font_Size" id="" value="16" onclick="artStatistics(&#39;20-10-2&#39;); addStatisticsFullScreen(1, 2, null)" checked="checked">中
+                                    </label>
+                                    &nbsp;
+					                <label>
+                                        <input type="radio" name="font_Size" id="" value="14" onclick="artStatistics(&#39;20-10-3&#39;); addStatisticsFullScreen(1, 3, null)">小
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="resavelayer1"><div class="zcommond" id="zcommondID"><span class="newbtn_forward" onclick="SaveArt();artStatistics(&#39;20-3-1&#39;);" id="top_reave"><i></i><b>转藏</b></span><span class="newbtn_fullscreen" onclick="FullScreenObj.init(); addStatisticsNew(&#39;20-30-1-33&#39;);"><i></i><b>全屏</b></span><span class="newbtn_listen" onclick="ArticleReadingClick(6);"><i><span></span><span></span><span></span><span></span></i><b>朗读</b></span><span class="newbtn_print" onclick="PrintObj.init();addStatisticsNew(&#39;20-31-1-69&#39;);" id="up_newbtn_print" style="display:none"><i></i><b>打印</b></span><span class="newbtn_word" id="newbtn_word" onclick="WordObj.init();addStatisticsNew(&#39;20-37-3-130&#39;)" style="display:none"><i></i><b>转Word</b></span><span class="newbtn_longpic" id="newbtn_longpic" onclick="ArticleLongImgClick(1)" style="display:none"><i></i><b>生成长图</b></span><span class="newbtn_share"><i></i><b>分享</b><a href="javascript:void(0);" onclick="artStatistics(&#39;20-8-1&#39;);shareclickfun(this)"></a><div class="sharelist_new" id="fenxiangLayer" style="display: none;"><a class="slbg1" href="javascript:void(0);" data-cmd="qzone" onclick="artStatistics(&#39;20-8-6&#39;);shareStatic.addStatic(&#39;qzone&#39;);">QQ空间</a><a class="slbg2" href="javascript:void(0);" data-cmd="sqq" onclick="artStatistics(&#39;20-8-7&#39;);shareStatic.addStatic(&#39;qq&#39;);">QQ好友</a><a class="slbg3" href="javascript:void(0);" data-cmd="tsina" onclick="artStatistics(&#39;20-8-8&#39;);shareStatic.addStatic(&#39;sina&#39;);">新浪微博</a><a class="slbg0" href="javascript:void(0);" onclick="shareWeixin()">微信</a></div></span></div><div style="position:  absolute;display:none;z-index:1;top:25px;left:0;" id="fuzhitishidiv"></div></div>
+                    </div>
+                    
+                    <div id="articlecontent" class="article_container" onmousedown="newhighlight = true;" onmouseup="NewHighlight(event);">
+                        <div class="article_showall">
+                            <div>
+                                <a href="javascript:void(0);" onclick="$(&#39;body&#39;).removeClass(&#39;articleMaxH&#39;);" datatype="360doczkqw">展开全文</a>
+                            </div>
+                        </div>
+                        <table style="width: 656px;">
+                            <tbody>
+                                <tr>
+                                    <td id="artContent" style="max-width: 656px;">
+                                        <div style="width: 656px; margin: 0; padding: 0; height: 0;"></div>
+
+                                        
+                                        
+
+                                        去年有想写个斗地主的小游戏，自己玩玩。找了很多资料，后来好不容易在网上找到了一个AI算法。转过的的时候是贴在自己电脑的TXT文本上，再次感谢下原作者。现在借花献佛发给你参考下。<span style="display: none;"> |&lt;1M&amp;\oaQ' </span>&nbsp;<br><span style="display: none;"> @O'I)(To </span>&nbsp;<br><span style="color: #ff0000;">我以前写过一个斗地主机器人。思路如下，希望对你有帮助。<span style="display: none;"> };^}
+2
+Xo+ </span>&nbsp;<br>斗地主AI设计<span style="display: none;"> }Fm\+JOS
+ </span>&nbsp;<br>一、牌型<span style="display: none;"> 7u|%^Ao6 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 火箭：大小王在一起的牌型，即双王牌，此牌型最大，什么牌型都可以打。<span style="display: none;"> QhsVIta </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 炸弹：相同点数的四张牌在一起的牌型，比如四条A。除火箭外，它可以打任何牌型，炸弹对炸弹时，要比大小。<span style="display: none;"> -qfnUh </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 单支（一手牌）：单张牌，如一支3。<span style="display: none;"> xdqK.Z%? </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 对子（一手牌）：相同点数的两张牌在一起的牌型，比如55。<span style="display: none;"> a}dw9wU!: </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 三条：相同点数的三张牌在一起的牌型，比如三条4。<span style="display: none;"> 3[.3d
+y7,Z </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 三带一手：三条 ＋ 一手牌的牌型，比如AAA+9或AAA+77。<span style="display: none;"> .'&amp;V#D0 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 单顺：五张或更多的连续单支牌组成的牌型，比如45678或345678910JQKA。2和大小王不可以连。<span style="display: none;"> bLco:-G1E1 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 双顺：三对或更多的连续对子组成的牌型，比如334455或445566778899。2和大小王不可以连。<span style="display: none;"> 	n7S;
+Xve# </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 三顺：二个或更多的连续三条组成的牌型，比如777888或444555666777。2和大小王不可以连。<span style="display: none;"> 83Uw </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 飞机带翅膀：三顺 ＋ 同数量的一手牌，比如777888+3+6或444555666+33+77+88。<span style="display: none;"> [1U{ci&amp;=p </span>&nbsp;<br>11 四带二：四条+两手牌。比如AAAA+7+9或9999+33+55。<span style="display: none;"> o[oqPN3$Y </span>&nbsp;<br>二、牌型分析<span style="display: none;"> p(?g- </span>&nbsp;<br>1 单顺的确定<span style="display: none;"> xj7vI&amp;u. </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) 选取五连，先取出最小的一个五连，再在剩余的牌中取出最小的一个五连，依此类推，直到没有五连为止。<span style="display: none;"> zIm-X,~I$  </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) 扩展五连，将剩余的牌与已经取出的牌进行比对，如果某张剩余的牌与已知的连牌能组成更大的连牌，则将其合并。一直到无法合并为止。<span style="display: none;"> %4/xH9 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) 合并连牌，如果某两组连牌能无缝连接成更大的连牌，则将其合并成一组。<span style="display: none;">
+TaWaHf </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经过上述选取、扩展和合并，则将一手牌中的所有连牌提取出来了，举例如下：<span style="display: none;"> r&gt;O|L%xpv </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假定一手牌是：2AKQJ1099877766543<span style="display: none;"> qlvwK&amp;W&lt;QM </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一步，选取出34567，678910两个连牌组。剩余的牌还有79JQKA2<span style="display: none;"> 5NFRPGYX  </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二步，剩余的JQKA能和678910组成新的连牌678910JQKA。<span style="display: none;"> h7*O.Opm= </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三步，已知的两个连牌组不能合并成新的、更大的连牌组，则这手牌就被分成了34567、678910JQKA两个连牌组和7、9、2三张单牌。<span style="display: none;"> \%4|t,en </span>&nbsp;<br><span style="display: none;"> Yt*vqm[WV </span>&nbsp;<br>2 双顺的确定<span style="display: none;"> rs_h}+6"s </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将一副牌中所有的对子检测出来，然后将对子排序，按照检测三连的方式可以将所有的双顺都提取出来。<span style="display: none;"> -N4z-ozhC </span>&nbsp;<br><span style="display: none;"> BsH{QRYQ </span>&nbsp;<br>3 三条的确定<span style="display: none;"> 0)	@jc= </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一副牌中的所有三条都能比较方便地提取出来。<span style="display: none;"> %qi%$ </span>&nbsp;<br><span style="display: none;"> ]5)"gL%H` </span>&nbsp;<br>4 三顺的确定<span style="display: none;"> *IqVY&amp; </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在三条的基础上进行比较，如果有相连的三条，则将其合并成（尽可能大的）三顺。<span style="display: none;"> xW0Z'== </span>&nbsp;<br><span style="display: none;"> ,5w]\z </span>&nbsp;<br>5 炸弹的确定<span style="display: none;"> #D0W7a </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有的四头都能很方便地确定。<span style="display: none;"> [S)?G$JW </span>&nbsp;<br><span style="display: none;"> Kr]W
+o8dWy </span>&nbsp;<br>6 火箭的确定<span style="display: none;"> #fj[kq)&amp;S </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只要牌张包含大小王，就将其组成火箭。<span style="display: none;"> ~QCA	-Yud </span>&nbsp;<br><span style="display: none;"> gb(#DbI </span>&nbsp;<br>7 牌张的分类方法<span style="display: none;"> Q0WY$w1&lt; </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) 先确定火箭：判断是否有大小王。<span style="display: none;"> 7*MU2gb </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) 再确定炸弹：判明是否有四头。<span style="display: none;"> fyrd`R </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) 再确定三条：在除了炸弹以外的牌中判断是否包含三条。<span style="display: none;"> Z)5klg$c </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) 再确定三顺：在已经确定的三条中判断是否包含相邻的三条，如果有，则将其组成三顺。注意，应该使三顺的数量尽可能大。即如果有444555666，则将其合成一个三顺，而不是分成444555一个三顺和666一个三条。<span style="display: none;"> yfC2^#9 Zu </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e)
+再确定单顺：判断单顺时必须去除四个2以外的所有炸弹。首先判断是否存在除了三条牌（这里的三条是指所有的三条）以外的连牌，如果有，则将其提取出来。其
+次，将剩余的牌与每一个三条（不包含三顺）进行试组合，如果能够重新组成单顺和对子，则将原有的三条取消，重新组合成连牌和单顺（例子4566678重新
+组成45678和66）。最后，将已知的连牌、三条（不包含三顺）和剩下的牌张再试组合，将所有如45678（已知的连牌）999（三条）10J（单
+牌），重新组合成45678910J和99。通过以上的方法，就能将连牌和三条很好地重新组合。<span style="display: none;"> #fN/LO </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) 再确定双顺：首先，如果两单顺牌完全重合，则将其重新组合成双顺。其次，在除炸弹、三顺、三条、单顺以外的牌中检测是否包含双顺。如果有，将其提取出来。<span style="display: none;"> 4]EvT=Ro </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g) 再确定对子：在炸弹、三顺、三条、连牌、双顺以外的牌中检测是否存在对子，如果存在将其提取出来。<span style="display: none;"> 0Nt%YP </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h) 再确定单牌：除了炸弹、三顺、三条、连牌、双顺、对子以外的所有牌张都是单牌。<span style="display: none;"> kU1	%f
+o </span>&nbsp;<br><span style="display: none;"> K.%z;(U </span>&nbsp;<br>8 对子的确定<span style="display: none;"> $bFgsy*N2 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参见上一节的“再确定对子”。<span style="display: none;"> 0R*}QXph </span>&nbsp;<br><span style="display: none;"> G&gt;JxIrN0 </span>&nbsp;<br>9 单牌的确定<span style="display: none;"> umryA{Ps </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参见上一节的“再确定单牌”。<span style="display: none;"> &lt;\p&amp;jk? </span>&nbsp;<br><span style="display: none;"> `"&lt;DH~:0B </span>&nbsp;<br>三、一手牌的手数分析<span style="display: none;"> q 7` </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为
+了使斗地主机器人有一定的智能，必须对一手牌的手数进行分析。所谓一手牌的手数，指的是在没有别人压牌的情况下需要出几把能将牌出完。这个数字在经过上面
+的分类后是可以确定的。还以上面的一手牌22AAKQJ9987776654为例，这手牌按照前面的分析方法可以分析出以下的牌型：<span style="display: none;"> $6Z[|9W^A </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22、AA、K、Q、J、987654、9、77、6的牌型<span style="display: none;"> 0OEtU5lf`y </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过对上面牌型的计算，可以容易得出这手牌需要9手才能出完，因此这手牌的手数就是9。<span style="display: none;"> +yvBSpY </span>&nbsp;<br><span style="display: none;"> Xz"
+JY? </span>&nbsp;<br>四、绝对手数和相对手数的概念<span style="display: none;"> /lru"R D </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为在斗地主游戏中存在火箭或炸弹的可能，所以理论上只有火箭才不可能被别人压住，所以，可以不考虑相对手数的概念。以后都简称手数。<span style="display: none;"> P^ by'b+zI </span>&nbsp;<br><span style="display: none;"> &gt;[hrJn[ </span>&nbsp;<br>五、叫牌原则分析<span style="display: none;"> }WoX9M;	1 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为在斗地主中，火箭、炸弹、王和2可以认为是大牌，所以叫牌需要按照这些牌的多少来判断。下面是一个简单的原则：<span style="display: none;"> ]2g5Ka[&gt;w </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假定火箭为8分，炸弹为6分，大王4分，小王3分，一个2为2分，则当分数<span style="display: none;"> Kgps_tY% </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于等于7分时叫三倍；<span style="display: none;"> i;gw=Be </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于等于5分时叫二倍；<span style="display: none;"> MuN[U17FB </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大于等于3分时叫一倍；<span style="display: none;"> j^:b-:F </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小于三分不叫。<span style="display: none;"> e$gaE&lt;/ </span>&nbsp;<br><span style="display: none;"> MI?]8+l </span>&nbsp;<br>六、出牌的一般原则<span style="display: none;"> F@oT7NB/n </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 出牌的原则一般按照从小到大的原则，即首先出包含最小牌的组合（单牌、对子、双顺、连牌、三顺、三条等，炸弹、火箭不包括在内）。<span style="display: none;"> 9
+&lt;y
+/Wv </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 三条的出牌原则：因为三条出牌可以带一张单牌或一个对子，所以在出三条时需要检测是否有单牌，如果有，则带一张最小的单牌，如果没有，则再检测是否存在对子，如果有，则跟一个最小的对子，如果单牌和对子都没有，则出三条。<span style="display: none;"> %9fa98&gt; </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在带牌时，除非是只剩两手牌，否则不能带王或2。<span style="display: none;"> (8+.#1!* </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3
+三顺的出牌原则：因为三顺出牌可以带两张（或更多）单牌或两个（或更多）对子，所以与出三条一样，需要检测是否有单牌或对子。如果有足够多的单牌或对子，
+则将其带出。如果有单牌，但没有足够多的单牌，则检查是否有6连以上的连牌，如果有将连牌的最小张数当作单牌带出。如果有对子，但没有足够多的对子，则检
+查是否有4连以上的双顺，如果有将双顺的最小对子当作对子带出。<span style="display: none;"> m/SJ4op$ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在带牌时，除非是只剩两手牌，否则不能带王或2。<span style="display: none;"> "0p +SZ~D </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 连牌的出牌原则：直接出。<span style="display: none;"> q_OY	sg </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 双顺的出牌原则：直接出。<span style="display: none;"> ]=O{7# </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 对子的出牌原则：因为对子可以用三条、三顺等带出，所以在出对子时，应该先检测一下三条＋三顺（中三条）的数量，如果所有三条数量 &lt;= 对子＋单牌数量总和－2时，出对子，否则出三带2等等。<span style="display: none;"> 	sASAsGk&lt; </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 单牌的出牌原则：因为单牌可以用三条、三顺等带出，所以在出单牌时，应该先检测一下三条＋三顺（中三条）的数量，如果所有三条数量 &lt;= 对子＋单牌数量总和－2时，出单牌，否则出三带1等等。<span style="display: none;"> vY8WqG] </span>&nbsp;<br><span style="display: none;"> zzDNWPzsA </span>&nbsp;<br>七、跟牌的一般原则<span style="display: none;"> T +|J19 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 如果手中有独立的，与所出的牌一样牌型的牌时，先跟之。<span style="display: none;"> eP-R""uPw </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 2可以作为单牌、对子、三条等形式跟出。<span style="display: none;"> *+4&gt;iL*: </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 当手中没有相应牌跟时，如果是本方人员出的牌，可以不跟，如果是对方出的牌，则必须拆牌跟，如果再没有，出炸弹或火箭，否则PASS。<span style="display: none;"> A,-[/Z K/ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 如果手中的牌除了炸弹。火箭外还剩一手牌，则如果牌型相符，则先跟之，否则炸之。<span style="display: none;"> V{/)RZ/ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 单牌的跟牌原则：如果手中有单牌，则跟之，否则拆2跟之，否则拆对牌跟之，否则拆6连以上的单顺顶张跟之，否则拆三条跟之，否则拆三顺跟之，否则拆5连单顺跟之，否则拆双顺跟之，否则炸之，否则PASS。<span style="display: none;"> v)v{QNQp^ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 对牌的根牌原则：如果手中有对子，则跟之，否则拆4连以上的双顺顶张跟之，否则拆三条跟之，否则拆双顺跟之，否则拆三顺跟之，否则炸之，否则PASS。<span style="display: none;"> #]N&amp;6ngJ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 三条、三带1、三带2等牌的根牌原则：如果手中有相同牌型的牌则跟之，否则拆三顺跟之，否则炸之，否则PASS。注意，只有在手中牌在出了以后还剩一手牌时，或直接出完的情况下，才允许带王或2。<span style="display: none;"> S]#=ES'^/ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在没有足够牌带的情况下，参照单牌。对子的拆牌原则进行拆牌处理。<span style="display: none;"> q_%w
+l5\F </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 三顺及三顺带牌的根牌原则：如果有相应的牌型，则跟之，否则可以将大的三顺拆成小的三顺跟之，否则炸之，否则PASS。注意，只有在手中牌在出了以后还剩一手牌时，或直接出完的情况下，才允许带王或2。<span style="display: none;"> * 7zN </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在没有足够牌带的情况下，参照单牌。对子的拆牌原则进行拆牌处理。<span style="display: none;"> XQ+-+CD </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 连牌的跟牌原则：如果有相应的牌型，则跟之，否则拆相同张数的双顺，否则拆相同张数的三顺，否则拆不同张数的连牌，否则拆不同张数的双顺，否则拆不同张数的三顺，否则炸之，否则PASS。<span style="display: none;"> P"h,[{Y*&gt; </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 双顺的跟牌原则：有相同牌型的牌，则跟之，否则拆不同张数的双顺，否则拆不同张数的三顺，否则拆相同张数的三顺，否则炸之，否则PASS。<span style="display: none;"> 80R=r </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 炸弹的跟牌原则：有超过所出炸弹的炸弹，或有火箭，则炸之，否则PASS。<span style="display: none;"> O
+#p)~
+V8~ </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12 炸弹带两手牌的跟牌原则：如果有炸弹，则炸之，否则PASS。<span style="display: none;"> eF gb6dSh </span>&nbsp;<br><span style="display: none;"> !@]h@MC$7 </span>&nbsp;<br>八、打牌原则解析<span style="display: none;"> =":V
+WHf? </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 坐庄打法：因为坐庄的只是自己一个人，不存在配合问题，所以一般按照前面的原则出牌即可。<span style="display: none;"> SjNwT[.nr7 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) 在出牌时，如果偏家有一个人只剩一张牌时，尽量不出单牌，否则单牌由大到小出。<span style="display: none;"> n&lt;"a+TTU </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) 在跟牌时，如果偏家有一个人只剩一张牌时，跟手中最大的牌。<span style="display: none;"> 2=UTH%1D </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 偏家打法：偏家因为牵涉到配合问题，所以打法有一些不同。<span style="display: none;"> H?zCIue3 </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) 在出牌时，如果是庄家的上家，且庄家只剩一张牌时，尽量不出单牌，否则单牌由大到小出。<span style="display: none;"> [b)K@Ha </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) 在跟牌时，如果是庄家的上家，且庄家只剩一张牌时，跟手中最大的牌。<span style="display: none;"> Z({`9+/&gt;u </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) 当一个偏家打出的是单牌时，一般情况下能跟就跟。如果手中必须跟2或以上的牌时，选择PASS。<span style="display: none;"> EF7|%N </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) 当一个偏家打出的是对子时，一般情况下能跟就跟。如果手中必须跟AA或以上的牌时，选择PASS。<span style="display: none;"> uBL~AC3&gt;O </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e) 如果一个偏家打出的牌是除了单牌及对子以外的牌型，则选择PASS。<span style="display: none;"> YQ[&amp;h </span>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f) 如果处在下家的偏家只剩一张牌时，在出牌时出手中最小的牌。跟牌还按照一般的原则。<span style="display: none;"> AQBx
+k[ </span>&nbsp;<br><span style="display: none;"> iJp!
+ROI </span>&nbsp;<br><span style="display: none;"> f+W[]KK*PW </span>&nbsp;<br><span style="display: none;"> cK} </span>&nbsp;<br><span style="display: none;"> G QB^ </span>&nbsp;<br><span style="display: none;"> h/y} </span>&nbsp;<br>五
+子棋算法探讨(转贴)
+近来随着计算机的快速发展，各种棋类游戏被纷纷请进了电脑，使得那些喜爱下棋，又常常苦于没有对手的棋迷们能随时过足棋瘾。而且这类软件个个水平颇高，大
+有与人脑分庭抗礼之势。其中战胜过国际象棋世界冠军-卡斯帕罗夫的“深蓝”便是最具说服力的代表；其它像围棋的“手淡”、象棋的“将族”等也以其优秀的人
+工智能深受棋迷喜爱；而我们今天将向大家介绍的是五子棋的算法。 当我们与电脑对战时，您知道这些软件是怎样象人脑一样进行思考的吗？
+总的来说（我们假定您熟悉五子棋的基本规则），要让电脑知道该在哪一点下子，就要根据盘面的形势，为每一可能落子的点计算其重要程度，也就是当这子落下后
+会形成什么棋型（如：“冲四”、“活三”等），然后通览全盘选出最重要的一点，这便是最基本的算法。当然，仅靠当前盘面进行判断是远远不够的，这样下棋很
+容易掉进玩家设下的陷阱，因为它没有考虑以后的变化。所以在此基础上我们加入递归调用，即：在电脑中预测出今后几步的各种走法，以便作出最佳选择，这也是
+我们下棋时常说的“想了几步”。如此一来您的程序便具有一定的水平了。什么？不信！过来试试吧！
+总体思路弄清之后，下面进行具体讨论：一：数据结构先来看看数据结构，我们需要哪些变量？首先得为整个棋盘建立一张表格用以记录棋子信息，我们使用一个
+15*15的二维数组 Table[15][15]
+(15*15是五子棋棋盘的大小)，数组的每一个元素对应棋盘上的一个交叉点，用‘0’表示空位、‘1’代表己方的子、‘2’代表对方的子；这张表也是今
+后分析的基础。在此之后还要为电脑和玩家双方各建立一张棋型表Computer[15][15][4]和Player[15][15][4]，用来存放棋
+型数据，就是刚才所说的重要程度，比如用‘20’代表“冲四”的点，用‘15’代表“活三”的点，那么在计算重要性时，就可以根据20&gt;15得出前
+者比后者重要，下子时电脑便会自动选择“冲四”的点。那为什么棋型表要使用三维数组呢？因为棋盘上的每一个点都可以与横、竖、左斜、右斜四个方向的棋子构
+成不同的棋型，所以一个点总共有4个记录；这样做的另一个好处是可以轻易判断出复合棋型，例如：如果同一点上有2个‘15’就是双三、有一个‘15’和一
+个‘20’就是四三。怎么样！3个数组构成了程序的基本数据骨架，今后只要再加入一些辅助变量便可以应付自如了。应该不会太难吧？OK！有了这么多有用的
+数据，我们就可以深入到程序的流程中去了。 二：程序流程
+我们主要讨论五子棋的核心算法，即：人工智能部分，而其他像图形显示、键盘鼠标控制等，因较为简单，所以就不作过多介绍了。 首先，请仔细阅读图1：
+我们看到本程序由六个基本功能模块构成，各模块的详细分析如下：（1）
+初始化：首先，建立盘面数组Table[15][15]、对战双方的棋型表Computer[15][15][4]和Player[15][15][4]
+并将它们清零以备使用；然后初始化显示器、键盘、鼠等输入输出设备并在屏幕上画出棋盘。（2）
+主循环控制模块：控制下棋顺序，当轮到某方下子时，负责将程序转到相应的模块中去，主要担当一个调度者的角色。（3）
+玩家下子：当轮到玩家下时，您通过键盘或鼠标在棋盘上落子，程序会根据该点的位置，在Table[15][15]数组的相应地方记录‘2’，以表明该子是
+玩家下的。（4）
+盘面分析填写棋型表：本程序核心模块之一，人工智能算法的根本依据！其具体实现方法如下：您在下五子棋时，一定会先根据棋盘上的情况，找出当前最重要的一
+些点位，如“活三”、“冲四”等；然后再在其中选择落子点。但是，电脑不会像人一样分析问题，要让它知道哪是“活三”、哪是“冲四”，就得在棋盘上逐点计
+算，一步一步的教它。
+先来分析己方的棋型，我们从棋盘左上角出发，向右逐行搜索，当遇到一个空白点时，以它为中心向左挨个查找，如果遇到己方的子则记录然后继续，如果遇到对方
+的子、空白点或边界就停止查找。左边完成后再向右进行同样的操作；最后把左右两边的记录合并起来，得到的数据就是该点横向上的棋型，然后把棋型的编号填入
+到Computer[x][y][n]中就行了（x、y代表坐标，n=0、1、2、3分别代表横、竖、左斜、右斜四个方向）。而其他三个方向的棋型也可用
+同样的方法得到，当搜索完整张棋盘后，己方棋型表也就填写完毕了。然后再用同样的方法填写对方棋型表。
+注意：所有棋型的编号都要事先定义好，越重要的号数越大！ OK! 怎么样？有点累了吧？不过千万别泄气！因为好戏还在后头。 Let’s go！（5）
+电脑下子：有了上面填写的两张棋型表，现在要作的就是让电脑知道在哪一点下子了。其中最简单的计算方法，就是遍历棋型表Computer[15][15]
+[4]和Player[15][15][4]找出其中数值最大的一点，在该点下子即可。但这种算法的弱点非常明显，只顾眼前利益，不能顾全大局，这就和许
+多五子棋初学者一样犯了“目光短浅”的毛病。 要解决这个问题，我们引入‘今后几步预测法’，具体方法是这样的： 首先，
+让电脑分析一个可能的点，如果在这儿下子将会形成对手不得不防守的棋型（例如：‘冲四’、‘活三’）；那么下一步对手就会照您的思路下子来防守您，如此一
+来便完成了第一步的预测。这时再调用模块4对预测后的棋进行盘面分析，如果出现了‘四三’、‘双三’或‘双四’等制胜点，那么己方就可以获胜了（当然对黑
+棋而言‘双三’、‘双四’是禁手，另当别论）；否则照同样的方法向下分析，就可预测出第二步、第三步……
+等一等，要是盘面上没有对手必须防的棋型，哪该怎么办呢？进攻不成的话就得考虑防守了，将自己和对手调换一下位置，然后用上面的方法来预测对手的棋，这样
+既可以防住对手巧妙的攻击，又能侍机发动反击，何乐而不为呢！
+但是必须告诉大家的是：预测法的运算量相当之大，据我的经验，用Pentium-100预测3步的走法平均需要15秒以上时间，所以建议预测量在5步以
+内。可别小瞧了这5步，有时它甚至会走出让您拍手叫绝的妙着呢！（6）
+胜负判断：务须多言，某方形成五子连即获胜；若黑棋走出‘双三’、‘双四’或长连即以禁手判负。
+到现在为止，整个五子棋软件就基本完成了，其水平大约在中级上下。当然，这种算法并不是最好的，但我相信它的基本思路是正确的。 </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+                <table>
+                    <!--防止文章内容有不完整标签-->
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul></ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div></div>
+                <span></span>
+                <a></a>
+                <p style="margin: 0; padding: 0;"></p>
+                <p class="clearboth"></p>
+
+
+                <div id="oranuserinfo" style="display: none; border: 0; padding: 0; margin: 0; overflow: visible;" class="yc_user zcomdiv new_yc_user">
+                </div>
+
+                <div id="divtort"><div style="color:#999;text-align:left;line-height:22px;background:#f7f7f7;padding: 10px 20px;margin-bottom: -7px;margin-top:10px;">本站是提供个人知识管理的网络存储空间，所有内容均由用户发布，不代表本站观点。请注意甄别内容中的联系方式、诱导购买等信息，谨防诈骗。如发现有害或侵权内容，请点击<span style="color:#155d9a;cursor:pointer;white-space: nowrap;" onclick="reportLayer.isLogin();artStatistics(&#39;20-18&#39;);">一键举报。</span></div></div>
+                
+                
+
+                <div class="bottombtn2" id="bottombtn2">
+                    <span class="newbtn_forward" onclick="SaveArt();artStatistics(&#39;20-3-2&#39;);" id="bt_resave"><i></i><b>转藏</b></span>
+                    
+                    
+                    
+                    
+                    
+                    <span class="newbtn_share">
+                        <i></i><b>分享</b>
+                        <a href="javascript:void(0);" onclick="artStatistics(&#39;20-8-3&#39;);shareclickfun(this)"></a>
+                        <div class="sharelist_new bdsharebuttonbox" id="fenxiangLayer2" style="display: none;">
+                            <a class="slbg1" href="javascript:void(0);" data-cmd="qzone" onclick="artStatistics(&#39;20-8-6&#39;);shareStatic.addStatic(&#39;qzone&#39;);">QQ空间</a>
+                            <a class="slbg2" href="javascript:void(0);" data-cmd="sqq" onclick="artStatistics(&#39;20-8-7&#39;);shareStatic.addStatic(&#39;qq&#39;);">QQ好友</a>
+                            <a class="slbg3" href="javascript:void(0);" data-cmd="tsina" onclick="artStatistics(&#39;20-8-8&#39;);shareStatic.addStatic(&#39;sina&#39;);">新浪微博</a>
+                            <a class="slbg0" href="javascript:void(0);" onclick="shareWeixin()" id="bottom_weixin">微信</a>
+                            <iframe width="95" height="95" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" allowtransparency="true" class="qr" rel="84917660" style="display: none;" src="./斗地主智能（AI）出牌算法_files/saved_resource(2).html"></iframe>
+                        </div>
+                    </span>
+                    <span id="flowimg3" class="newbtn_hua" onclick="Showflowerlayer(&#39;sendedLayer1&#39;);"><i></i><b>献花（<span id="articleflowernum">3</span>）
+                            <span id="flowernumadd" style="display: none;">+1</span></b></span>
+                </div>
+                <div class="bottom_controler">
+                    <p class="bottom_cleft wordnobreak_">
+                        来自：
+                        <span class="a_username" style="width: auto;">
+                            <a href="http://www.360doc.com/userhome/2617151" id="savernickname2" target="_blank" onclick="artStatistics(&#39;20-7-2&#39;);">Ethan的博客</a>
+                        </span>
+                        &gt; 
+                        <span id="cname" class="a_from"><a href="http://www.360doc.com/userhome.aspx?userid=2617151&amp;cid=4" target="_blank" onclick="artStatistics(&quot;20-6&quot;);">《java云》</a></span>
+                    </p>
+                    <div class="bottom_cright">
+                        
+                        <span>
+                            <a href="javascript:void(0);" class="a2 a3" onclick="reportLayer.isLogin();artStatistics(&#39;20-18&#39;);">举报/认领</a>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="zcomdiv">
+                    <div class="prev_next">
+                        <div class="p1" id="lastart" style="">
+                            <span>上一篇：</span>
+                            <div><a onclick="artStatistics(&quot;20-9-5&quot;);" href="http://www.360doc.com/content/11/0106/12/2617151_84413935.shtml" target="_blank">实现JAVA手动布局中各个组件能随窗口变化的方法</a></div>
+                        </div>
+                        <div class="p2" id="nextart" style="">
+                            <span>下一篇：</span>
+                            <div><a onclick="artStatistics(&quot;20-9-6&quot;);" href="http://www.360doc.com/content/11/0310/19/2617151_99978063.shtml" target="_blank">转贴：java中List的用法和实例详解</a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="clearboth"></p>
+
+            <div style="height: auto !important; overflow: hidden;">
+                <a href="javascript:void(0)" id="topref" style="height: 0px;"></a>
+                <div id="divyoulikeadtitle" class="mod__" style="">
+                    <div class="str_border" style="border: none; position: relative; z-index: 2;">
+                        <strong>猜你喜欢</strong>
+                    </div>
+                    <ul class="youlike" style="margin-top: -18px; position: relative; z-index: 1;" id="divyoulikeadbody">
+                        <div style="width: 676px; height: 280px; border: 0;" id="divyoulikead"><iframe id="youlikead" style="width: 676px; height: 280px; border: 0;" frameborder="0" scrolling="no" src="./斗地主智能（AI）出牌算法_files/adbaiduyoulike.html"></iframe></div>
+                    </ul>
+                </div>
+                <div class="clearboth"></div>
+                <div class="mod__">
+                    <div class="new_plbox zcomdiv">
+                        <p id="refNumDIV" class="p1 f_left"><span id="refNumSpan">0</span>条评论</p>
+                        
+                        
+                        <div class="new_huifubt f_left">
+                            <textarea name="SendRefTB" id="SendRefTB" value="写评论...">写评论...</textarea>
+                            <p>
+                                <a id="ImgSendPL" href="javascript:void(0);" onclick="SubmitReflection();">发表</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                    
+                    <p id="plgyDIV" style="margin: 0; text-align: right; padding: 7px 19px 0 0; color: #999;">请遵守用户&nbsp;<a href="http://www.360doc.com/pages/agreement.html" target="_blank">评论公约</a></p>
+                    
+                    <ul class="replylist" id="reflectionListUL">
+                    </ul>
+                    <div class="reply_pager" id="pageBarDIV">
+                    </div>
+                    <a href="javascript:void(0)" class="reply_more" onclick="setSpread()" style="display: none;">查看更多评论<img src="./斗地主智能（AI）出牌算法_files/reply_btn.gif"></a>
+                </div>
+                <div class="mod__" style="height: auto !important;">
+                    <div class="str_border" style="border: none;">
+                        <strong>类似文章</strong>
+                        <a href="http://www.360doc.com/relevant/84917660_more.shtml" target="_blank" class="a_more f_right" onclick="artStatistics(&quot;20-9-8&quot;);">更多</a>
+                    </div>
+                    <ul class="ul-similar" style="height: auto !important;">
+                        <li id="artid_2914298"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/09/0325/15/115582_2914298.shtml">斗地主之心算基本技法</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/09/0325/15/115582_2914298.shtml">喜欢斗地主吗？就是有点牌感！</a></p></div></li><div class="google-auto-placed" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6625678643128649" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 0px;" data-ad-status="unfilled"><div id="aswift_1_host" style="border: none; height: 0px; width: 658px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: hidden; opacity: 0;"><iframe id="aswift_1" name="aswift_1" browsingtopics="true" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 658px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="658" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/ads.html" data-google-container-id="a!2" tabindex="0" title="Advertisement" aria-label="Advertisement" data-google-query-id="COSTn86X04kDFeSKuQUd2so1jQ" data-load-complete="true"></iframe></div></ins></div><li id="artid_670622691"><span class="similar-pic f_left"><a href="http://www.360doc.com/content/17/0711/19/34454318_670622691.shtml" target="_blank" onclick="artStatistics(&quot;20-9-7&quot;);"><img src="./斗地主智能（AI）出牌算法_files/670622691_1.jpg"></a></span> <div class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/17/0711/19/34454318_670622691.shtml">斗地主的基本技巧分析</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/17/0711/19/34454318_670622691.shtml">我把斗地主的基本技巧分为：记牌，算牌，叫牌，拆牌，顶牌和喂牌几种，下面来分别介绍：算牌是在记牌的基础上进行的，算牌有时候也是猜...</a></p></div></li><li id="artid_2177511"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/08/1222/16/70172_2177511.shtml">斗地主之出牌技巧</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/08/1222/16/70172_2177511.shtml">斗地主（Land）之出牌技巧
+在斗地主游戏中每一个人的角色都是不断变化的，但每一个角色出牌的基本方法是比较固定的。关键是如何运用其中的技巧。下面我们来简单的介绍一下每个角色的出牌原则。</a></p></div></li><li name="liadfeed" style=""></li><li id="artid_2995779"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/09/0402/11/19147_2995779.shtml">四人斗地主（两副牌)技巧分析（精）</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/09/0402/11/19147_2995779.shtml">如果地主一圈过来是A飞机，那你当然毫不犹豫拉，这个时候要么变道，变道前一定要审清牌：是否变成顺子牌，当然如果你手上有大鬼，走单可以再一次读地主手上的牌，但是危险也会进一步增加的，因为如果地...</a></p></div></li><div class="google-auto-placed" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6625678643128649" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 0px;" data-ad-status="unfilled"><div id="aswift_2_host" style="border: none; height: 0px; width: 658px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: hidden; opacity: 0;"><iframe id="aswift_2" name="aswift_2" browsingtopics="true" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 658px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="658" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/ads(1).html" data-google-container-id="a!3" tabindex="0" title="Advertisement" aria-label="Advertisement" data-google-query-id="CLK7n86X04kDFXvxTAIdPLUPBA" data-load-complete="true"></iframe></div></ins></div><li id="artid_189558825"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/12/0225/17/1106582_189558825.shtml">斗地主秘籍总结 额滴神啊</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/12/0225/17/1106582_189558825.shtml">反春　　　　举一个比较经典的例子——反春带双炸：若自己有一炸无大小王，地主第一手出一张或一对，地主下家直接拿2或22压牌田主不要，然后下家接着出一些大牌（如：910JQKA、QQQKKK+*+*、345678910JQ...</a></p></div></li><li id="artid_367527675"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/14/0409/16/15921762_367527675.shtml">斗地主：如何记住对方出的牌</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/14/0409/16/15921762_367527675.shtml">添加摘要</a></p></div></li><li name="liadfeed" style=""></li><li id="artid_100552053"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/11/0312/20/4244189_100552053.shtml">怎样提高斗地主技术？</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/11/0312/20/4244189_100552053.shtml">一般斗地主高手出三圈牌后，就能大概说出一些牌的分布，这都是善于分析的结果。斗地主时你是地主的下家，要掩护对家快速出牌，当你对家剩一张牌的时候，你可管牌后送他出完。（斗地主还有一种新的弄法...</a></p></div></li><div class="google-auto-placed" style="width: 100%; height: auto; clear: none; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6625678643128649" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 0px;" data-ad-status="unfilled"><div id="aswift_4_host" style="border: none; height: 0px; width: 658px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: hidden; opacity: 0;"><iframe id="aswift_4" name="aswift_4" browsingtopics="true" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 658px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="658" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/ads(2).html" data-google-container-id="a!5" tabindex="0" title="Advertisement" aria-label="Advertisement" data-google-query-id="CImmos6X04kDFWQNewcdZmopVw" data-load-complete="true"></iframe></div></ins></div><li id="artid_2604157"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/09/0221/09/79077_2604157.shtml">斗地主技巧杂谈_</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/09/0221/09/79077_2604157.shtml">6、被忽略的算牌关键：算准地主单牌过到几；9、地主手上无大牌，外面可能有炸弹时，要先打脱手牌手上打的越少越好，（但手上剩下的牌很小也可打偷跑牌，剩很长一串，一次跑掉）。14、暗示（停顿）的运...</a></p></div></li><li id="artid_80712264"><div style="width:100%;margin:0;" class="similar-info  f_left"><p class="similar-title"><a target="_blank" onclick="artStatistics(&#39;20-9-7&#39;);" href="http://www.360doc.com/content/10/1223/16/3881660_80712264.shtml">斗地主技巧大全</a></p><p class="similar-text"><a onclick="artStatistics(&#39;20-9-7&#39;);" target="_blank" href="http://www.360doc.com/content/10/1223/16/3881660_80712264.shtml">有时候上家出了个小对子，你手上正好只有一对小对子可跟也不要跟，因为万一上家的牌不好也想放牌给你，见你跟对子了他就要误会他放对牌了，结果等地主也跟对子后上家就会放手，这样就白白的送给地主一...</a></p></div></li><li name="liadfeed" style=""></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="a_right">
+
+            <div id="rightfixed" style="width: 300px;"><div class="vipact" style=""><a href="http://www.360doc.com/member/index.html?type=0&amp;imgcode=46-8" target="_blank">个图VIP买2年赠1年，限时198元&gt;&gt;</a><span>x</span></div>
+                
+                <div class="user_info">
+                    <div class="user_photo_new f_left">
+                        <a href="http://www.360doc.com/userhome/2617151" id="userphotourl" target="_blank" onclick="artStatistics(&#39;20-7-4&#39;);">
+                            <img src="./斗地主智能（AI）出牌算法_files/001.gif" id="userphoto">
+                        </a>
+                    </div>
+                    <div class="user_data f_right">
+                        <div class="user_data_name">
+                            <a href="http://www.360doc.com/userhome/2617151" id="nickname" target="_blank" onclick="artStatistics(&#39;20-7-3&#39;);">Ethan的博客</a><i id="VerificationTips" style="display: none" class="aut" title="已通过个人认证"><a href="https://pay.360doc.com/pages/myaccount.aspx?app=23" target="_blank" onclick="artStatistics(&#39;25-13-3-27&#39;);"></a></i>
+                        </div>
+                        <p id="userdegree"><img src="./斗地主智能（AI）出牌算法_files/userstar1.gif"><img src="./斗地主智能（AI）出牌算法_files/userstar1.gif"><img src="./斗地主智能（AI）出牌算法_files/userstar1.gif"><img src="./斗地主智能（AI）出牌算法_files/userstar1.gif"><img src="./斗地主智能（AI）出牌算法_files/userstar3.gif"></p>
+                        
+                        
+                        <div class="user_data_num" id="follow_talk">
+                            <a class="user_data_gz" href="javascript:void(0);" id="spanfollowstatusnew">关注</a>
+
+
+                            <a class="user_data_dh" href="javascript:void(0);" onclick="this.blur();docTalk();artStatistics(&#39;20-15&#39;);">对话</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="his_her"><ul class="his_her_type"><li class="f_left curone"><a href="http://www.360doc.com/userhome/2617151" style="color:#000;" target="_blank" onclick="artStatistics(&#39;20-9-10&#39;);">TA的最新馆藏</a></li></ul><div class="his_her_div" style="height:190px;"><ul class="his_her_list"><li><div><span style="color:#b0b0b0;">[转]&nbsp;</span><a title="pve 命令行连接wifi" href="http://www.360doc.com/content/22/0112/20/1264837_1012994287.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">pve 命令行连接wifi</a></div><div><span></span><a title="10个方法帮你搞定Web设计风格指南 – 欲思博客" href="http://www.360doc.com/content/15/1217/15/2617151_521071378.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">10个方法帮你搞定Web设计风格指南 – 欲思博客</a></div><div><span></span><a title="30种症状证明你应该离开电脑到户外走走 – 欲思博客" href="http://www.360doc.com/content/15/1217/15/2617151_521071209.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">30种症状证明你应该离开电脑到户外走走 – 欲思博客</a></div><div><span></span><a title="20个让你爱不释手的汉堡菜单设计风格网站示例欣赏 – 欲思博客" href="http://www.360doc.com/content/15/1217/15/2617151_521068910.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">20个让你爱不释手的汉堡菜单设计风格网站示例欣赏 – 欲思博客</a></div><div><span></span><a title="利用七牛云存储CDN服务给WordPress静态文件加速 – 欲思博客" href="http://www.360doc.com/content/15/1217/15/2617151_521067734.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">利用七牛云存储CDN服务给WordPress静态文件加速 – 欲思博客</a></div><div><span style="color:#b0b0b0;">[转]&nbsp;</span><a title="程序员们的情书" href="http://www.360doc.com/content/12/0702/07/6828497_221632854.shtml" target="_blank" onclick="artStatistics(&#39;20-9-11&#39;);">程序员们的情书</a></div></li></ul></div></div>
+
+
+<div class="clear360doc" id="outerdivifartad1">
+    
+<script async="async" crossorigin="anonymous" src="./斗地主智能（AI）出牌算法_files/f(7).txt" data-checked-head="true"></script></div>
+
+<div class="his_her" id="recommendArt">
+
+
+    <div class="hhtitle_">
+        <span class="s1">喜欢该文的人也喜欢</span>
+        <a onclick="artStatistics(&#39;20-28-4&#39;);" href="http://www.360doc.com/readroom.html" target="_blank">更多</a>
+    </div>
+    <div class="hhlist_new" id="recommendArtLists"><div class="d1"><span class="f_left g"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/14/0629/05/1581441_390772839.shtml" title="资深驾驶员对新手的一些建议" target="_blank" onclick="imgLog(2,&#39;code=20-28-1&amp;artid=390772839&#39;);imgLog(2,&#39;code=20-28-2&amp;artid=390772839&#39;);">资深驾驶员对新手的一些建议</a><span>阅92</span></div></div><div class="d1"><span class="f_left g"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/14/0409/04/15921762_367527675.shtml" title="斗地主：如何记住对方出的牌" target="_blank" onclick="imgLog(2,&#39;code=20-28-1&amp;artid=367527675&#39;);imgLog(2,&#39;code=20-28-2&amp;artid=367527675&#39;);">斗地主：如何记住对方出的牌</a><span>阅5032</span></div></div><div class="d1"><span class="f_left g"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/19/1112/01/57765377_872537233.shtml" title="深圳批发市场一览表" target="_blank" onclick="imgLog(2,&#39;code=20-28-1&amp;artid=872537233&#39;);imgLog(2,&#39;code=20-28-2&amp;artid=872537233&#39;);">深圳批发市场一览表</a><span>阅151</span></div></div><div class="d1"><span class="f_left g"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/18/1223/09/31294239_803879796.shtml" title="看完这篇文章，教你“力由脊发”" target="_blank" onclick="imgLog(2,&#39;code=20-28-1&amp;artid=803879796&#39;);imgLog(2,&#39;code=20-28-2&amp;artid=803879796&#39;);">看完这篇文章，教你“力由脊发”</a><span>阅23</span></div></div><div class="d1"><span class="f_left g"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/13/1204/07/6321210_334491303.shtml" title="六味地黄丸为何能防治痛风呢？" target="_blank" onclick="imgLog(2,&#39;code=20-28-1&amp;artid=334491303&#39;);imgLog(2,&#39;code=20-28-2&amp;artid=334491303&#39;);">六味地黄丸为何能防治痛风呢？</a><span>阅13062</span></div></div></div>
+</div>
+
+
+
+
+<div class="his_her" id="recommendArtHot">
+    <div class="hhtitle_">
+        <span class="s1"><i class="atnavicons"></i>热门阅读</span>
+        <a onclick="reSetHotArt();artStatistics(&#39;20-55-1-0&#39;);" href="javascript:void(0)">换一换</a>
+    </div>
+    <div class="hhlist_new" id="recommendArtHotLists"><div class="d1"><span class="f_left"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/19/1021/06/33713228_868083882.shtml" title="说课的基本步骤和方法（附《说课稿模板》）" target="_blank" onclick="imgLog(1,&#39;code=20-55-1-1&#39;);">说课的基本步骤和方法（附《说课稿模板》）</a><span>阅11169</span></div></div><div class="d1"><span class="f_left"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/20/0329/09/8480963_902389012.shtml" title="黄帝外经全文（共九卷）" target="_blank" onclick="imgLog(1,&#39;code=20-55-1-1&#39;);">黄帝外经全文（共九卷）</a><span>阅59524</span></div></div><div class="d1"><span class="f_left"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/18/0225/11/52760486_732305343.shtml" title="初中几何经典模型总结（手拉手模型）" target="_blank" onclick="imgLog(1,&#39;code=20-55-1-1&#39;);">初中几何经典模型总结（手拉手模型）</a><span>阅148148</span></div></div><div class="d1"><span class="f_left"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/14/0309/16/16181922_359040223.shtml" title="小学生课堂常规基本要求及训练口令" target="_blank" onclick="imgLog(1,&#39;code=20-55-1-1&#39;);">小学生课堂常规基本要求及训练口令</a><span>阅112127</span></div></div><div class="d1"><span class="f_left"></span><div class="f_right  data_"><a href="http://www.360doc.com/content/20/0627/17/54870271_920810673.shtml" title="​三年级科学下册知识点（带答案）" target="_blank" onclick="imgLog(1,&#39;code=20-55-1-1&#39;);">​三年级科学下册知识点（带答案）</a><span>阅14111</span></div></div></div>
+
+</div>
+
+
+
+<div class="clear360doc" style="padding-top: 10px;" id="divifartad2">
+</div>
+
+
+
+
+<div class="clear360doc" id="divad5" style="zoom: 1; width: 300px; top: 80px; left: 1119.5px;">
+    <div id="divad4" style="">
+        <div id="divifartad"><iframe id="ifartad" height="250px" width="300px" frameborder="0" scrolling="no" src="./斗地主智能（AI）出牌算法_files/ad4_300.html"></iframe></div>
+        <div class="ggwz">
+        </div>
+        <div style="height: 13px;">
+        </div>
+    </div>
+    <div style="clear: both;" id="divad6">
+        <div id="adfloatbaidu"><iframe id="ifartadfloadbaidu" height="250px" width="250px" frameborder="0" scrolling="no" src="./斗地主智能（AI）出牌算法_files/ad5.html" style="width: 250px; margin: 0px auto;"></iframe></div>
+        <div class="ggwz">
+        </div>
+        <div style="height: 13px;">
+        </div>
+    </div>
+    <div style="height: 75px;">
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <p class="clearboth"></p>
+    <input type="hidden" id="artid" value="84917660">
+    <input type="hidden" id="docarttitle" value="%e6%96%97%e5%9c%b0%e4%b8%bb%e6%99%ba%e8%83%bd%ef%bc%88AI%ef%bc%89%e5%87%ba%e7%89%8c%e7%ae%97%e6%b3%95">
+    <input type="hidden" id="firstartid" value="84917660">
+    <input type="hidden" id="firstuid" value="2617151">
+    <input type="hidden" id="myuid" value="-1">
+    <input type="hidden" id="firstarturl" value="http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml">
+    <input type="hidden" id="oranfirstarturl" value="">
+    <input type="hidden" id="subclassid" value="0">
+    <input type="hidden" id="recommendart1" value="2914298">
+    <input type="hidden" id="recommendart2" value="225931963">
+    <input type="hidden" id="isowner" value="False">
+
+    <input type="hidden" id="isowner2" value="0">
+    <input type="hidden" id="original" value="0">
+    <input type="hidden" id="showrewardlist" value="0">
+    <input type="hidden" id="saveruserid" value="2617151">
+    <input type="hidden" id="sourceurl" value="http://www.ghoffice.com/bbs/read-htm-tid-81039.html">
+    <input type="hidden" id="deschidden" value="日志，分享，经验，音乐，电影，心修，创业，成功学，GTD，个人知识管理。">
+    <input type="hidden" id="firstkeywords" value="">
+    <input type="hidden" id="firsttagwords" value="">
+    <input type="hidden" id="firstsubclassid" value="0">
+    <input type="hidden" id="hidisneweditor" value="0">
+    <input type="hidden" id="hidreadroomclassid" value="0">
+    <input type="hidden" id="hidsubclassid" value="-1">
+    <input type="hidden" id="hidisshowminiapp" value="1">
+    <input type="hidden" id="articleTime" value="2011-01-08T09:56:36">
+    <input name="acinfo" type="hidden" id="acinfo">
+    <input type="hidden" id="activityimg" value="http://ebookimage.360doc.com/banner/banner_1590142105143.jpeg">
+    <input type="hidden" id="activityurl" value="http://www.360doc.com/member/index.html">
+    <input type="hidden" id="isblackartid" value="2">
+    <input type="hidden" id="isIllegalArt" value="2">
+    <input type="hidden" id="hidappid" value="">
+    <input type="hidden" id="userstatus" value="1">
+    <input type="hidden" id="isshowimg" value="1">
+    <input type="hidden" id="showarttype" value="0">
+    <input type="hidden" id="hidden_permission" value="0">
+    <input type="hidden" id="AuthorizerAppid" value="">
+    <input type="hidden" id="source" value="">
+    <input type="hidden" id="hidIsReflecion" value="1">
+    <input type="hidden" id="artreadroomid" value="0">
+    <div class="contextmenu" id="contextmenudiv" style="display: none;">
+        <ul>
+            <li><a href="javascript:void(0)" onclick="document.execCommand(&#39;Copy&#39;);addStatisticsNew(&#39;20-29-1-2&#39;);">复制</a></li>
+            <li><a href="javascript:void(0)" onclick="PrintObj.init();addStatisticsNew(&#39;20-31-1-72&#39;);">打印文章</a> </li>
+            <li class="sendtophone"><a href="javascript:void(0)" onclick="addStatisticsNew(&#39;20-41-1-147&#39;);">发送到手机</a>
+                <div class="qr" id="mobileQr" style="display: none;">
+                    <p>微信扫码，在手机上查看选中内容</p>
+                    <div id="sendtophone_qr"></div>
+                </div>
+            </li>
+            <li><a href="javascript:void(0)" onclick="FullScreenObj.init();addStatisticsNew(&#39;20-30-1-118&#39;);">全屏阅读</a> </li>
+            
+            <li id="ArticleReadingLiBtn1" style=""><a id="ArticleReadingBtn1" href="javascript:void(0)" onclick="ArticleReadingClick(2);">朗读全文<b></b></a></li>
+            
+            <li id="share_li">
+                <a href="javascript:void(0)" class="tri">分享文章</a>
+                <div class="sharelist_new ctxshare bdsharebuttonbox" id="ctxshare" style="display: none;">
+                    <a class="slbg1" href="javascript:void(0);" data-cmd="qzone" onclick="artStatistics(&#39;20-8-6&#39;);shareStatic.addStatic(&#39;qzone&#39;);">QQ空间</a>
+                    <a class="slbg2" href="javascript:void(0);" data-cmd="sqq" onclick="shareStatic.addStatic(&#39;qq&#39;);artStatistics(&#39;20-8-7&#39;);">QQ好友</a>
+                    <a class="slbg3" href="javascript:void(0);" data-cmd="tsina" onclick="shareStatic.addStatic(&#39;sina&#39;);artStatistics(&#39;20-8-8&#39;);">新浪微博</a>
+                    <a class="slbg0" href="javascript:void(0);" onclick="shareWeixin()" id="ctx_weixin">微信</a>
+                    <iframe width="95" height="95" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" allowtransparency="true" class="qr" rel="84917660" style="display: none;" src="./斗地主智能（AI）出牌算法_files/saved_resource(3).html"></iframe>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="contextmenu unlogin" id="contextmenudivmouseup" style="left: 430px; top: 126px; display: none;">
+        <ul><li id="aibtn_" class="aibtn_"><a href="javascript:void(0);"><i></i>AI解释</a></li>
+            <li><a class="a1" href="javascript:void(0)" onclick="document.execCommand(&#39;Copy&#39;);$(&#39;#contextmenudivmouseup&#39;).hide();addStatisticsNew(&#39;20-29-1-2&#39;);">复制</a></li>
+            <li id="print_li_mouseup" style="display: none;"><a href="javascript:void(0)" onclick="PrintObj.init();$(&#39;#contextmenudivmouseup&#39;).hide();addStatisticsNew(&#39;20-31-1-71&#39;);">打印文章</a> </li>
+            <li class="sendtophone" style="display: none"><a href="javascript:void(0)" onclick="addStatisticsNew(&#39;20-41-1-146&#39;);">发送到手机</a>
+                <div class="qr" style="display: none;">
+                    <p>微信扫码，在手机上查看选中内容</p>
+                    <div></div>
+                </div>
+            </li>
+            <li><a href="javascript:void(0)" onclick="FullScreenObj.init();$(&#39;#contextmenudivmouseup&#39;).hide();addStatisticsNew(&#39;20-30-1-117&#39;);">全屏阅读</a> </li>
+            
+            <li id="ArticleReadingLiBtn2" style=""><a id="ArticleReadingBtn2" href="javascript:void(0)" onclick="ArticleReadingClick(3);$(&#39;#contextmenudivmouseup&#39;).hide();">朗读全文</a> </li>
+            
+        </ul>
+    </div>
+    <script src="./斗地主智能（AI）出牌算法_files/hm.js.download"></script><script src="./斗地主智能（AI）出牌算法_files/360query18.js.download" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+     function setDragEnd() { };
+     function NewHighlight() { };
+     function delAllDiv() { };
+     if (window.location.toString().indexOf("shtml?") > 0) {
+         self.location = window.location.toString().replace(window.location.search.toString(), "");
+     }
+     function doccheckart(json) {
+         if (json[0].result == "1") {
+             if ( 84917660 !=  84917660) {
+                 if (getCookie("360doc1") != null) {
+                     $.ajax({
+                         url: "http://www.360doc.com/ajax/getuserid.ashx",
+                         async: false,
+                         cache: false,
+                         dataType: "json",
+                         success: function (result) {
+
+                             if (2617151 != result.userid) {
+                                 self.location = "http://www.360doc.com/noarticle.aspx";
+                             }
+                         },
+                         error:function(){
+                            self.location = "http://www.360doc.com/noarticle.aspx";
+                        }
+                     });
+                 }
+                 else {
+                     self.location = "http://www.360doc.com/noarticle.aspx";
+                 }
+             }
+             else {
+                 self.location = "http://www.360doc.com/noarticle.aspx";
+             }
+         }
+     }
+    </script>
+    <script src="./斗地主智能（AI）出牌算法_files/addStatistics.js.download" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        function getCookie(name) //获取cookie值
+        {
+            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            if (arr != null)
+                return unescape(arr[2]);
+            return null;
+        }
+        var patt1 = new RegExp("[0-9]*_[0-9]*");
+        var url = patt1.exec(location.href);
+        if (navigator.userAgent.toLowerCase().indexOf("micromessenger") > -1) {
+            window.location.href = "http://www.360doc6.net/wxarticlenew/" + url.toString().split("_")[1] + ".html";
+
+        }
+        else if (navigator.userAgent.indexOf("iPhone") > 0 || navigator.userAgent.indexOf("Android") > 0 || navigator.userAgent.indexOf("iPod") > 0) {  //手机端跳转
+
+            if (url != "") {
+                self.location = "https://www.360doc.cn/article/" + url + ".html";
+            }
+        }
+
+        if ( 84917660 !=  84917660) {
+            if (getCookie("360doc1") != null) {
+                $.ajax({
+                    url: "http://www.360doc.com/ajax/getuserid.ashx",
+                    async: false,
+                    cache: false,
+                    dataType: "json",
+                    success: function (result) {
+
+                        if (2617151 != result.userid) {
+
+                            self.location = "http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml";
+                        }
+                    }
+                });
+            }
+            else {
+                self.location = "http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml";
+            }
+        }
+
+
+        if ( 0 !=  84917660&&"0" != "" &&"0" != "0" &&"0" != 1) {
+            $.ajax({
+                url: "http://www.360doc.com/ajax/getuserid.ashx",
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    if (result.userid != 2617151) {
+                        location = "";
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="./斗地主智能（AI）出牌算法_files/showarticlefollow20160329.js.download" type="text/javascript" charset="utf-8"></script>
+
+    <script src="./斗地主智能（AI）出牌算法_files/jQuery.md5.min.js.download" type="text/javascript" charset="utf-8"></script>
+    <script src="./斗地主智能（AI）出牌算法_files/docgjio.js.download" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?d86954201130d615136257dde062a503";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script src="./斗地主智能（AI）出牌算法_files/report.js.download" type="text/javascript" charset="utf-8"></script>
+
+    <script src="./斗地主智能（AI）出牌算法_files/sha1.js.download" type="text/javascript"></script>
+    <script type="text/javascript" src="./斗地主智能（AI）出牌算法_files/newheader2022.js.download"></script>
+    <script src="./斗地主智能（AI）出牌算法_files/showarticle.js.download" type="text/javascript" charset="utf-8"></script>
+    <script>GerLookingUserInfo(1,2617151,1,0,'','',10,0);OutputLastNextArt('实现JAVA手动布局中各个组件能随窗口变化的方法','http://www.360doc.com/content/11/0106/12/2617151_84413935.shtml',0);OutputLastNextArt('转贴：java中List的用法和实例详解','http://www.360doc.com/content/11/0310/19/2617151_99978063.shtml',1);</script>
+
+    <script src="./斗地主智能（AI）出牌算法_files/getstatusv2.ashx" type="text/javascript" charset="utf-8" async="async"></script>
+    
+    
+    <script type="text/javascript">
+        var baiduImagePlus = {
+            noLogo: true,
+            unionId: 'u2617463',
+            maxMiniAdCount: 0,
+            formList: [{ formId: 10 }]
+        };
+        //imgLogPcPage(1, 'code=69-2');
+    </script>
+    <script type="text/javascript" src="./斗地主智能（AI）出牌算法_files/i.js.download" async="async"></script>
+    
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+        "@id": "http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml",
+        "title": "斗地主智能（AI）出牌算法",
+        "pubDate": "2011-01-08T09:56:36"
+    }
+    </script>
+        
+
+
+<div id="goTop2" style="left: 1439.5px;"><div style="border-bottom: solid 1px #eee;width: 50px;">							<a id="goTop" onclick="imgLog(1, &#39;code=20-39-1-1&#39;);" style="display: none;"></a>						</div>						<div class="fxbtn_ai" id="fxbtn_ai">					<a></a>					<p>AI助手</p>					<div style="display: block;">						<i></i>						<span>阅读时有疑惑？点击向AI助手提问吧</span>					</div>				</div>						<div id="goTop1">							<a id="go_top1"></a>						</div>						<div class="fxbtn_app" id="fxbtn_app">							<a></a>							<div>								<span></span>							</div>						</div>						<div id="fxbtn_service" class="fxbtn_service">							<a></a>							<div>								<p class="d0">联系客服</p>								<div class="d1"><p class="p1"><i class="sic"></i>微信扫码，添加客服企业微信</p><span class="sic"></span></div>								<div class="d2"><p class="p1"><i class="sic"></i>客服QQ：</p><a class="p2 sic" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1732698931&amp;site=qq&amp;menu=yes" target="_blank">1732698931</a></div>								<div class="d3"><p class="p1"><i class="sic"></i>联系电话：4000-999-276</p></div><p class="d4">客服工作时间9:00-18:00，晚上非工作时间，请在微信或QQ留言，第二天客服上班后会立即联系您。</p></div>							</div>						</div><div id="veepn-breach-alert"><template shadowrootmode="open"><style>.breach-popup{font-family:FigtreeVF,sans-serif;position:fixed;z-index:2147483638;-webkit-font-smoothing:antialiased;text-rendering:optimizelegibility;top:0;left:0;right:0;pointer-events:none;padding-inline:16px;height:0;overflow:visible;color:#222e3a}.breach-popup *{box-sizing:border-box}.breach-popup__inner{background-color:#de4558;width:100%;border-radius:16px;margin-inline:auto;pointer-events:all;position:relative;transition:transform .25s ease-in-out,max-width .25s ease-in-out;transform:translateY(16px);max-height:calc(100svh - 80px);display:flex;flex-direction:column}.breach-popup__header{min-height:32px;display:flex;align-items:center;justify-content:space-between;column-gap:16px;padding:4px;cursor:pointer}.breach-popup__close{cursor:pointer;background-color:transparent;border-style:none;outline:none;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;opacity:.5}.breach-popup__wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease-in-out;overflow:hidden}.breach-popup__content{overflow:hidden;opacity:0;transform:translateY(-10px)}.breach-popup--minimize .breach-popup__inner{max-width:485px;transform:translateY(-100%)}.breach-popup--collapse .breach-popup__inner{max-width:485px}.breach-popup--expand .breach-popup__inner{max-width:1120px}.breach-popup--expand .breach-popup__wrap{grid-template-rows:1fr}.breach-popup--expand .breach-popup__content{opacity:1;transform:translateY(0);transition:transform .25s ease-in-out,opacity .25s ease-in-out;transition-delay:.15s}.breach-popup--expand .breach-popup__header{cursor:default}.breach-info{padding:2px;height:100%}.breach-info__inner{padding:22px 22px 0;background-color:#fff;border-bottom-left-radius:15px;border-bottom-right-radius:15px;height:100%;overflow:auto}.breach-info__alert{font-size:24px;line-height:32px;font-weight:700;margin:0}.breach-info__list{margin-top:24px;display:flex;flex-wrap:wrap;gap:24px}@media only screen and (width >= 992px){.breach-info__list{flex-wrap:nowrap}}.breach-info__item{width:100%}.breach-info__item:nth-child(2){max-width:320px}.breach-info__item:nth-child(3){max-width:200px}.breach-info__title{font-size:18px;font-weight:700;line-height:32px;letter-spacing:-.1px;color:#de4558;margin-top:0;margin-bottom:4px}.breach-info__description{font-size:16px;line-height:28px;letter-spacing:-.1px}.breach-info__description ul{margin:0}.breach-info__actions{display:flex;justify-content:center;padding-top:32px;padding-bottom:22px;background-color:#fff;position:sticky;bottom:0}.breach-info__btn{cursor:pointer;border-style:none;outline:none;display:inline-flex;align-items:center;height:48px;padding-inline:20px;border-radius:12px;text-align:center;font-size:16px;font-weight:700;line-height:28px;letter-spacing:-.1px;color:#fff;background-color:#ff6400}.button-expand{position:absolute;bottom:0;left:50%;transform:translate(-50%,100%);z-index:1}.button-expand__pointer{cursor:pointer}.button-expand__alert{pointer-events:none;transition:opacity .25s ease-in-out}.button-expand__arrow{pointer-events:none;transition:transform .25s ease-in-out,opacity .25s ease-in-out;transform-origin:center}.button-expand--minimize .button-expand__arrow,.button-expand--collapse .button-expand__alert,.button-expand--expand .button-expand__alert{opacity:0}.button-expand--expand .button-expand__arrow{transform:rotate(180deg)}.header-collapse{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:8px;font-size:14px;line-height:20px;letter-spacing:-.1px;color:#fff}.header-expand{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:20px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-.1px;color:#fff}</style></template></div><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2-variations");font-weight:100 1000;font-display:swap}</style><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;"><iframe id="aswift_0" name="aswift_0" browsingtopics="true" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/ads(3).html" data-google-container-id="a!1" tabindex="0" title="Advertisement" aria-label="Advertisement" data-load-complete="true"></iframe></div></ins><iframe name="googlefcPresent" style="display: none; width: 0px; height: 0px; border: none; z-index: -1000; left: -1000px; top: -1000px;" src="./斗地主智能（AI）出牌算法_files/saved_resource(4).html"></iframe><div class="google-auto-placed" style="width: 100%; height: auto; clear: both; text-align: center;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-6625678643128649" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 0px;" data-ad-status="unfilled"><div id="aswift_3_host" style="border: none; height: 0px; width: 1200px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block; overflow: hidden; opacity: 0;"><iframe id="aswift_3" name="aswift_3" browsingtopics="true" style="left: 0px; position: absolute; top: 0px; border: 0px; width: 1200px; height: 0px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="1200" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/ads(4).html" data-google-container-id="a!4" tabindex="0" title="Advertisement" aria-label="Advertisement" data-google-query-id="CL71sNCX04kDFWLGTAIdcgIMDQ" data-load-complete="true"></iframe></div></ins></div><iframe name="__tcfapiLocator" src="./斗地主智能（AI）出牌算法_files/saved_resource(5).html" style="display: none; width: 0px; height: 0px; border: none; z-index: -1000; left: -1000px; top: -1000px;"></iframe><iframe name="googlefcInactive" src="./斗地主智能（AI）出牌算法_files/saved_resource(6).html" style="display: none; width: 0px; height: 0px; border: none; z-index: -1000; left: -1000px; top: -1000px;"></iframe><iframe name="googlefcLoaded" src="./斗地主智能（AI）出牌算法_files/saved_resource(7).html" style="display: none; width: 0px; height: 0px; border: none; z-index: -1000; left: -1000px; top: -1000px;"></iframe><iframe src="./斗地主智能（AI）出牌算法_files/aframe.html" width="0" height="0" style="display: none;"></iframe><div id="needVerify" style="display: none; position: fixed; z-index: 1002;"></div><div id="fullbg" style="width: 100%; height: 100%; display: block;display:none;"></div><div class="bevip__" id="bevip__" style="display: none; margin: 0px 0px 0px -229px; position: fixed; inset: 239.5px auto auto 50%; z-index: 100000;">	<a href="javascript:void(0);" class="closer" onclick="noPayCopyTemp();TipLayer.close()">×</a>	<div class="bevip__step1" style="">		<div>			<div class="bevip__text1" style="display:none;"><!--全屏提示文字--></div>			<!--复制提示文字-->			<div class="bevip__text2" style=""></div>            <div class="bevip__text3" style="display:none;"></div>            <div class="bevip__text4" style="display:none;"></div>            <div class="bevip__text5" style="display:none;"></div>            <div class="bevip__text6" style="display:none;"></div>			<!---->            <div id="card_container_unlogin">                <div class="bevip__card_scr_wrap"><a class="bevip__icon aprev" style="display:none"></a><div class="bevip__card_scr"><ul class="bevip__card" id="cardlist_unlogin"><li class="cur"><p class="p1">36 个月</p><p class="p2">¥ <span>198</span><i>¥720</i></p><p class="p3">¥5.5/月</p><p class="p4">两年赠一年</p></li><li><p class="p1">12 个月</p><p class="p2">¥ <span>108</span><i>¥240</i></p><p class="p3">¥0.3/天</p><p class="p4">4.5折</p></li><li><p class="p1">3 个月</p><p class="p2"><span>¥45</span></p><p class="p3">¥0.5/天</p></li><li left="107"><p class="p1">1 个月</p><p class="p2"><span>¥20</span></p><p class="p3">¥0.67/天</p><p class="p4">超值推荐</p></li></ul></div><a class="bevip__icon anext"></a></div>            </div>			<div class="bevip__qr">				<span class="bevip__code"><img width="140" height="140" src="./斗地主智能（AI）出牌算法_files/MakeQRCode.aspx"></span>				<div class="bevip__qr_right">					<p class="p1" id="qrprice_p_unlogin">¥<span id="qrprice_unlogin">198</span><i>支付即享36个月VIP！</i></p>					<p class="p2">微信或支付宝扫码支付：<i class="bevip__icon"></i></p>					<p class="p3">开通即同意<a href="http://www.360doc.com/pages/vipagreement.html" target="_blank">《个图VIP服务条款》</a></p>                    <p class="p4" style="display:none" id="paying">正在支付中，请勿关闭二维码！</p>				</div>			</div>            <p class="vxpaytext">微信支付后，该微信自动注册为你的个人图书馆账号</p>			<a class="to508" href="http://www.360doc.com/help.html?id=508" target="_blank">如何开发票？</a>		</div>		<p><a href="javascript:TipLayer.showCheckOrder_Copy();" id="checkorderalink">已经开通VIP，还是不能使用？</a></p>	</div>	<div class="bevip__step2" style="display: none;">		<p class="p1" id="sucessTips_p"><i class="bevip__icon"></i><span id="sucessTips">复制成功！</span></p>		<div id="bevip__zfbtips">		<p class="p2">绑定账号，享受<i class="bevip__icon"></i>特权</p>		<div class="d1" id="paidbinddiv">			<a href="javascript:void(0)" onclick="toSNSLogin(&#39;wx&#39;,5); addStatisticsNew(&#39;20-29-1-26&#39;);" class="bevip__icon a1"><!--weixin--></a>			<a href="javascript:void(0)" onclick="toSNSLogin(&#39;qq&#39;,5); addStatisticsNew(&#39;20-29-1-28&#39;);" class="bevip__icon a2"><!--qq--></a>			<a href="javascript:void(0)" onclick="toSNSLogin(&#39;smb&#39;,5); addStatisticsNew(&#39;20-29-1-30&#39;);" class="bevip__icon a3"><!--wibo--></a>		</div>		</div>		<div id="bevip__wxtips" style="display: none;">            <p class="p3" id="wx_pay_copy_tips">恭喜你成为个图VIP！<br>在打印前，点击“下一步”观看2个提示</p><a href="javascript:void(0)" id="nextstep" onclick="TipLayer.close()">下一步</a>		</div>		<div class="bevip__icon d2"><a href="http://www.360doc.com/member/index.html?callback=VipOpen&amp;imgcode=20-29" id="openviplink_nologin" target="_blank">全部&gt;&gt;</a></div>        <div class="bevip__rights_bg">					<ul class="bevip__rights">						<li><span>●</span> 电子书免费读</li>						<li><span>●</span> 全站无广告</li>						<li><span>●</span> 全屏阅读</li>						<li><span>●</span> 高品质朗读</li>						<li><span>●</span> 批量上传文档</li>						<li><span>●</span> 可关注600人</li>						<li><span>●</span> 5千个文件夹</li>						<li><span>●</span> 专属客服</li>					</ul>        </div>	</div>	<div class="bevip__lost" style="display: none;">		<div class="p1_tips" id="bevip__p1_tips" style="top:-72px;">			<p>微信支付查找“商户单号”方法：<br>			1.打开微信app，点击消息列表中和“微信支付”的对话<br>			2.找到扫码支付给360doc个人图书馆的账单，点击“查看账单详情”<br>			3.在“账单详情”页，找到“商户单号”<br>			4.将“商户单号”填入下方输入框，点击“恢复VIP特权”，等待系统校验完成即可。<br><br>			支付宝查找“商户订单号”方法：<br>			1.打开支付宝app，点击“我的”-“账单”<br>			2.找到扫码支付给个人图书馆的账单，点击进入“账单详情”页<br>			3.在“账单详情”页，找到“商家订单号”<br>			4.将“商家订单号”填入下方输入框，点击“恢复VIP特权”，等待系统校验完成即可。</p><i class="bevip__icon"></i>		</div>		<p class="p1x" id="backTips_p">已经开通VIP，还是不能<span>打印</span>？</p>		<p class="p2x"><span>请通过以下步骤，尝试恢复VIP特权</span><br>		<i>第1步</i>在下方输入你支付的微信“商户单号”或支付宝“商家订单号”<br>		<i>第2步</i>点击“恢复VIP特权”，等待系统校验完成即可</p>		<p class="ptips"><a href="javascript:void(0);" onmouseover="$(&#39;#bevip__p1_tips&#39;).show();" onmouseout="$(&#39;#bevip__p1_tips&#39;).hide();">如何查找商户单号？</a></p>		<div class="bevip__rform">			<input type="text" id="backOderId" value="输入微信【商户单号】或支付宝【商家订单号】" onfocus="if(this.value==this.defaultValue){this.value=&#39;&#39;}" onblur="if(this.value==&#39;&#39;){this.value=this.defaultValue}">		<a href="javascript:void(0);" class="bevip__retrieve" onclick="UserObj.findBack()">恢复VIP特权</a>		</div>		<span class="bevip__rloading">			<span></span>			<p>正在查询...</p>		</span>		<p class="p3x" id="ordererrortips">订单号过期！<br>该订单于2020/09/09 23:59:59支付，VIP有效期：2020/09/09 23:59:59至2020/09/11 23:59:59！如需使用VIP功能，建议重新开通VIP</p>		<a href="javascript:void(0);" class="bevip__back" onclick="TipLayer.showBack()">返回上一页</a>	</div>        <div class="bevip__copysub" id="bevip__copysub" style="display: none;">		<p class="p1"><i class="bevip__icon"></i><span>支付成功！</span></p><p class="p2"></p><a href="javascript:void(0)" onclick="reCopy()">确定</a>        </div>        <div class="bevip__copysub" id="mobilepaydtips" style="display: none;height: auto;">		<p class="p1" id="sendtips" style="margin: 46px 0 22px 0;"><i class="bevip__icon"></i><span>已获得“发送到手机”权限！</span></p><p class="p2" id="qrTopTips">微信扫码，在手机上查看选中内容</p><div class="qr" id="bigqr"></div><div style="display: none;" id="sendmobileBindLayer">	<div class="bevip__icon d2"></div>	<div class="bevip__rights_bg">					<ul class="bevip__rights">						<li><span>●</span> 电子书免费读</li>						<li><span>●</span> 全站无广告</li>						<li><span>●</span> 全屏阅读</li>						<li><span>●</span> 高品质朗读</li>						<li><span>●</span> 批量上传文档</li>						<li><span>●</span> 可关注600人</li>						<li><span>●</span> 5千个文件夹</li>						<li><span>●</span> 专属客服</li>					</ul>        </div></div>        </div>        <div class="bevip__copysub2" style="display: none;">		<p class="p1"><i class="bevip__icon"></i><span></span></p><p class="p2" style="" id="copyLayerTxt">确定复制刚才选中的内容？</p><a href="javascript:void(0)" onclick="reCopy2()">确定</a>									</div></div><div class="bevip__tips" id="bevip__tips">    <a href="javascript:void(0);" class="closer" onclick="TipLayer.closeAd()">×</a>    <!--        bevip__tips_p1 ： 开通VIP 全屏           bevip__tips_p2 ： 开通VIP 去广告    -->        <p class="p1" id="novipusercopy" style="display:none;"><i class="bevip__icon"></i><span>复制成功！</span></p>    <div class="bevip__icon2 bevip__tips_p2" id="openvipdiv"></div>         <div id="card_container">                   <ul class="bevip__card" id="cardlist"></ul>            </div>		<div class="bevip__qr">				<span class="bevip__code"><img width="140" height="140" src="./斗地主智能（AI）出牌算法_files/MakeQRCode.aspx"></span>				<div class="bevip__qr_right">					<p class="p1" id="qrprice_p">¥<span id="qrprice"></span>.00</p>					<p class="p2">微信或支付宝扫码支付：<i class="bevip__icon"></i></p>                    <p class="p3">开通即同意<a href="http://www.360doc.com/pages/vipagreement.html" target="_blank">《个图VIP服务条款》</a></p>                    <p class="p4" style="display:none" id="paying2">正在支付中，请勿关闭二维码！</p>                     <p class="p6" id="autotips" style="display:none;"><span>自动续费¥12/月，可随时取消&nbsp;<a href="http://www.360doc.com/pages/renewagreement.html?id=off" target="_blank"><img src="./斗地主智能（AI）出牌算法_files/mywallet_1.jpg" style="vertical-align: top;margin-top: 2px;"></a><br></span></p>				</div>            <p class="clause_" id="autotips2" style="display:none;">开通即同意<a href="http://www.360doc.com/pages/renewagreement.html" target="_blank">《自动续费服务协议》</a>|<a href="http://www.360doc.com/pages/vipagreement.html" target="_blank">《个图VIP服务条款》</a></p>			<a class="to508" href="http://www.360doc.com/help.html?id=508" target="_blank">如何开发票？</a>			</div>    <div class="bevip__icon d2"><a href="http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml#" id="openviplink" target="_blank">全部&gt;&gt;</a></div>					<ul class="bevip__rights">						<li><span>●</span> 电子书免费读</li>						<li><span>●</span> 全站无广告</li>						<li><span>●</span> 全屏阅读</li>						<li><span>●</span> 高品质朗读</li>						<li><span>●</span> 批量上传文档</li>						<li><span>●</span> 可关注600人</li>						<li><span>●</span> 5千个文件夹</li>						<li><span>●</span> 专属客服</li>					</ul>         </div><div class="bevip__paymenttip" id="bevip__paymenttip" style="display:none;">    <a href="javascript:void(0)" class="closer" onclick="TipLayer.closeLoopPayTips()">×</a>    <p class="p1">支付确认</p>    <p class="p2">1. 请在手机上打开的页面进行支付；<br>2. 如支付完成，请点击“支付完成”。</p>    <div>        <a href="javascript:LoopPool.checkPaySucess()" class="a1">支付完成</a>        <a href="javascript:void(0)" onclick="TipLayer.closeLoopPayTips()">取消支付</a>    </div></div><div id="artfullscreen" class="artfullscreen__">	<div id="artfullscreen__box" class="artfullscreen__box">		<div class="artfullscreen__box_scr" id="artfullscreen__box_scr"></div>	</div>	<div class="artfullscreen_toolbar" id="artfullscreen_toolbar">		<a href="http://www.360doc.com/content/11/0108/09/2617151_84917660.shtml#" class="artfullscreen_closer" id="artfullscreen_closer">×</a>		<div class="d1"></div>		<div class="d2"></div>	</div></div></body><iframe id="google_esf" name="google_esf" src="./斗地主智能（AI）出牌算法_files/zrt_lookup_fy2021.html" style="display: none;"></iframe><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;" aria-hidden="true" data-ad-status="filled" data-vignette-loaded="true" tabindex="0"><div id="aswift_5_host" style="border: none !important; height: 100vh !important; width: 100vw !important; margin: 0px !important; padding: 0px !important; position: relative !important; visibility: visible !important; background-color: transparent !important; display: inline-block !important; inset: auto !important; clear: none !important; float: none !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; vertical-align: baseline !important; z-index: auto !important;"><iframe id="aswift_5" name="aswift_5" browsingtopics="true" style="width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; position: absolute !important; clear: none !important; display: inline !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; vertical-align: baseline !important; visibility: visible !important; z-index: auto !important;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="" height="" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="./斗地主智能（AI）出牌算法_files/zrt_lookup_fy2021(1).html" data-google-container-id="a!6" tabindex="0" title="Advertisement" aria-label="Advertisement" data-google-query-id="CNXA5s2X04kDFdIVewcdDaMIZA" data-load-complete="true"></iframe></div></ins></html>

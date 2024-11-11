@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.cnblogs.com/Jasmine-smi/p/17216483.html -->
+<html lang="zh-cn" style="--olcb-folder-code-block-max-height: 80vh; --cnb-code-bg: rgb(245, 245, 245); --cnb-code-font-size: 12px; --cnb-code-color: rgb(68, 68, 68);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <meta name="keywords" content="算法 / 回溯算法">
+    <meta name="description" content="回溯算法解决排列—组合—子集问题 无论是排列、组合还是子集问题，就是让你从序列 nums 中以给定规则取若干元素，主要有以下几种变体： 元素无重不可复选，即 nums 中的元素都是唯一的，每个元素最多只能被使用一次，这也是最基本的形式。 元素可重不可复选，即 nums 中的元素可以存在重复，每个元素">
+    <meta property="og:description" content="回溯算法解决排列—组合—子集问题 无论是排列、组合还是子集问题，就是让你从序列 nums 中以给定规则取若干元素，主要有以下几种变体： 元素无重不可复选，即 nums 中的元素都是唯一的，每个元素最多只能被使用一次，这也是最基本的形式。 元素可重不可复选，即 nums 中的元素可以存在重复，每个元素">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>回溯算法解决排列—组合—子集问题 - QING~h - 博客园</title>
+    <link rel="canonical" href="https://www.cnblogs.com/Jasmine-smi/p/17216483.html">
+    <link rel="shortcut icon" id="favicon" href="https://assets.cnblogs.com/favicon.svg?v=2" type="image/svg+xml">
+    
+    <style>#home :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs), :not(.cnblogs_code):not(.cnblogs_Highlighter)>pre:not([highlighted]):not([class*="brush:"]) code:not(.hljs) {background: rgb(245, 245, 245);
+        padding: 12px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 3px;
+        border-color: transparent;
+        color: rgb(68, 68, 68);
+        font-family: "Courier New", sans-serif;
+        font-size: 12px</style><link rel="stylesheet" href="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/blog-common.min.css">
+    
+
+    <link id="MainCss" rel="stylesheet" href="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/bundle-simplememory.min.css">
+        <link id="highlighter-theme-cnblogs" type="text/css" rel="stylesheet" href="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/custom.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/bundle-simplememory-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/Jasmine-smi/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/Jasmine-smi/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/Jasmine-smi/wlwmanifest.xml">
+    <script>
+        var currentBlogId = 774022;
+        var currentBlogApp = 'Jasmine-smi';
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        window.cb_enable_mathjax = true;
+        window.mathEngine = 1;
+        window.codeHighlightEngine = 1;
+        window.enableCodeLineNumber = false;
+        window.codeHighlightTheme = 'cnblogs';
+        window.darkModeCodeHighlightTheme = 'vs2015';
+        window.isDarkCodeHighlightTheme = false;
+        window.isDarkModeCodeHighlightThemeDark = true;
+        window.isDisableCodeHighlighter = false;
+        window.enableCodeThemeTypeFollowSystem = false;
+        window.enableMacStyleCodeBlock = false;
+    </script>
+        <script>
+            window.currentPostId = 17216483;
+            window.currentPostDateAdded = '2023-03-14 21:48';
+        </script>
+    <script src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/jquery-3.3.1.min.js.download"></script>
+    <script src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/blog-common.min.js.download"></script><style>.medium-zoom-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 300ms;
+  will-change: opacity;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  cursor: pointer;
+  cursor: zoom-out;
+  opacity: 1;
+}
+
+.medium-zoom-image {
+  cursor: pointer;
+  cursor: zoom-in;
+  /*
+    The `transition` is marked as "!important" for the animation to happen
+    even though it's overriden by another inline `transition` style attribute.
+
+    This is problematic with frameworks that generate inline styles on their
+    images (e.g. Gatsby).
+
+    See https://github.com/francoischalifour/medium-zoom/issues/110
+   */
+  transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1) !important;
+}
+
+.medium-zoom-image--hidden {
+  visibility: hidden;
+}
+
+.medium-zoom-image--opened {
+  position: relative;
+  cursor: pointer;
+  cursor: zoom-out;
+  will-change: transform;
+}
+</style><script id="hljs-script" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/highlight.min.js.download" type="text/javascript" async=""></script>
+        <script>updateCustomBlogReferrer();</script>
+    
+<script id="mathjax" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/tex-mml-chtml.js.download" type="text/javascript" defer=""></script><meta property="og:image" content="https://s2.loli.net/2023/03/14/2NG9lHRJYKkAMnE.png"><script src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/noerrors.js.download" charset="UTF-8"></script><script src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/extpfeil.js.download" charset="UTF-8"></script><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://mathjax.cnblogs.com/3_2_1/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+<body class="skin-simplememory no-navbar mathjax3 hljs-engine">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding">
+                    <a href="https://www.cnblogs.com/" title="开发者的网上家园" role="banner">
+                        <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/logo.svg" alt="博客园Logo">
+                    </a>
+                </li>
+                <li><a href="https://cnblogs.vip/">会员</a></li>
+                <li><a href="https://cnblogs.vip/store">周边</a></li>
+                    <li><a href="https://www.cnblogs.com/cmt/p/18500368">众包</a></li>
+                <li>
+                    <a href="https://news.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-news&#39;)">新闻</a>
+                </li>
+                <li>
+                    <a href="https://q.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-q&#39;)">博问</a>
+                </li>
+                <li>
+                    <a href="https://ing.cnblogs.com/" onclick="countClicks(&#39;nav&#39;, &#39;skin-navbar-ing&#39;)">闪存</a>
+                </li>
+                <li><a href="https://www.cnblogs.com/cmt/p/18341478">赞助商</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search dropdown" action="https://zzk.cnblogs.com/s" method="get" role="search">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="search" tabindex="3" autocomplete="off">
+                        <button id="zzk_search_button" onclick="window.navbarSearchManager.triggerActiveOption()">
+                            <img id="search_icon" class="focus-hidden" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/search.svg" alt="搜索">
+                            <img class="hidden focus-visible" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/enter.svg" alt="搜索">
+                        </button>
+                        <ul id="navbar_search_options" class="dropdown-menu quick-search-menu">
+                            <li tabindex="0" class="active" onclick="zzkSearch(event, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                <div class="keyword-wrapper">
+                                    <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/search.svg" alt="搜索">
+                                    <div class="keyword"></div>
+                                </div>
+                                <span class="search-area">所有博客</span>
+                            </li>
+                                    <li tabindex="1" onclick="zzkBlogSearch(event, &#39;Jasmine-smi&#39;, document.getElementById(&#39;zzk_search_input&#39;).value)">
+                                        <div class="keyword-wrapper">
+                                            <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/search.svg" alt="搜索">
+                                            <div class="keyword"></div>
+                                        </div>
+                                        <span class="search-area">当前博客</span>
+                                    </li>
+                        </ul>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <a id="navbar_lite_mode_indicator" data-current-page="blog" style="display: none" href="javascript:void(0)" alt="简洁模式" title="简洁模式启用，您在访问他人博客时会使用简洁款皮肤展示">
+                        <img class="navbar-icon" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/lite-mode-on.svg" alt="简洁模式">
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/lite-mode-check.svg" class="hide" style="display: none;"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <script type="text/javascript">
+/*
+    功能：生成博客目录的JS工具
+    测试：IE8，火狐，google测试通过
+    孤傲苍狼
+    2014-5-11
+*/
+var BlogDirectory = {
+    /*
+        获取元素位置，距浏览器左边界的距离（left）和距浏览器上边界的距离（top）
+    */
+    getElementPosition:function (ele) {        
+        var topPosition = 0;
+        var leftPosition = 0;
+        while (ele){              
+            topPosition += ele.offsetTop;
+            leftPosition += ele.offsetLeft;        
+            ele = ele.offsetParent;     
+        }  
+        return {top:topPosition, left:leftPosition}; 
+    },
+
+    /*
+    获取滚动条当前位置
+    */
+    getScrollBarPosition:function () {
+        var scrollBarPosition = document.body.scrollTop || document.documentElement.scrollTop;
+        return  scrollBarPosition;
+    },
+    
+    /*
+    移动滚动条，finalPos 为目的位置，internal 为移动速度
+    */
+    moveScrollBar:function(finalpos, interval) {
+
+        //若不支持此方法，则退出
+        if(!window.scrollTo) {
+            return false;
+        }
+
+        //窗体滚动时，禁用鼠标滚轮
+        window.onmousewheel = function(){
+            return false;
+        };
+          
+        //清除计时
+        if (document.body.movement) { 
+            clearTimeout(document.body.movement); 
+        } 
+
+        var currentpos =BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+
+        var dist = 0; 
+        if (currentpos == finalpos) {//到达预定位置，则解禁鼠标滚轮，并退出
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true; 
+        } 
+        if (currentpos < finalpos) {//未到达，则计算下一步所要移动的距离
+            dist = Math.ceil((finalpos - currentpos)/10); 
+            currentpos += dist; 
+        } 
+        if (currentpos > finalpos) { 
+            dist = Math.ceil((currentpos - finalpos)/10); 
+            currentpos -= dist; 
+        }
+        
+        var scrTop = BlogDirectory.getScrollBarPosition();//获取滚动条当前位置
+        window.scrollTo(0, currentpos);//移动窗口
+        if(BlogDirectory.getScrollBarPosition() == scrTop)//若已到底部，则解禁鼠标滚轮，并退出
+        {
+            window.onmousewheel = function(){
+                return true;
+            }
+            return true;
+        }
+        
+        //进行下一步移动
+        var repeat = "BlogDirectory.moveScrollBar(" + finalpos + "," + interval + ")"; 
+        document.body.movement = setTimeout(repeat, interval); 
+    },
+    
+    htmlDecode:function (text){
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    },
+
+    /*
+    创建博客目录，
+    id表示包含博文正文的 div 容器的 id，
+    mt 和 st 分别表示主标题和次级标题的标签名称（如 H2、H3，大写或小写都可以！），
+    interval 表示移动的速度
+    */
+    createBlogDirectory:function (id, mt, st, interval){
+         //获取博文正文div容器
+        var elem = document.getElementById(id);
+        if(!elem) return false;
+        //获取div中所有元素结点
+        var nodes = elem.getElementsByTagName("*");
+        //创建博客目录的div容器
+        var divSideBar = document.createElement('DIV');
+        divSideBar.className = 'uprightsideBar';
+        divSideBar.setAttribute('id', 'uprightsideBar');
+        var divSideBarTab = document.createElement('DIV');
+        divSideBarTab.setAttribute('id', 'sideBarTab');
+        divSideBar.appendChild(divSideBarTab);
+        var h2 = document.createElement('H2');
+        divSideBarTab.appendChild(h2);
+        var txt = document.createTextNode('目录导航');
+        h2.appendChild(txt);
+        var divSideBarContents = document.createElement('DIV');
+        divSideBarContents.style.display = 'none';
+        divSideBarContents.setAttribute('id', 'sideBarContents');
+        divSideBar.appendChild(divSideBarContents);
+        //创建自定义列表
+        var dlist = document.createElement("dl");
+        divSideBarContents.appendChild(dlist);
+        var num = 0;//统计找到的mt和st
+        mt = mt.toUpperCase();//转化成大写
+        st = st.toUpperCase();//转化成大写
+        //遍历所有元素结点
+        for(var i=0; i<nodes.length; i++)
+        {
+            if(nodes[i].nodeName == mt|| nodes[i].nodeName == st)    
+            {
+                //获取标题文本
+                var nodetext = nodes[i].innerHTML.replace(/<\/?[^>]+>/g,"");//innerHTML里面的内容可能有HTML标签，所以用正则表达式去除HTML的标签
+                nodetext = nodetext.replace(/ /ig, "");//替换掉所有的 
+                nodetext = BlogDirectory.htmlDecode(nodetext);
+                //插入锚        
+                nodes[i].setAttribute("id", "blogTitle" + num);
+                var item;
+                switch(nodes[i].nodeName)
+                {
+                    case mt:    //若为主标题 
+                        item = document.createElement("dt");
+                        break;
+                    case st:    //若为子标题
+                        item = document.createElement("dd");
+                        break;
+                }
+                
+                //创建锚链接
+                var itemtext = document.createTextNode(nodetext);
+                item.appendChild(itemtext);
+                item.setAttribute("name", num);
+                item.onclick = function(){        //添加鼠标点击触发函数
+                    var pos = BlogDirectory.getElementPosition(document.getElementById("blogTitle" + this.getAttribute("name")));
+                    if(!BlogDirectory.moveScrollBar(pos.top, interval)) return false;
+                };            
+                
+                //将自定义表项加入自定义列表中
+                dlist.appendChild(item);
+                num++;
+            }
+        }
+        
+        if(num == 0) return false; 
+        /*鼠标进入时的事件处理*/
+        divSideBarTab.onmouseenter = function(){
+            divSideBarContents.style.display = 'block';
+        }
+        /*鼠标离开时的事件处理*/
+        divSideBar.onmouseleave = function() {
+            divSideBarContents.style.display = 'none';
+        }
+
+        document.body.appendChild(divSideBar);
+    }
+    
+};
+
+window.onload=function(){
+    /*页面加载完成之后生成博客目录*/
+    BlogDirectory.createBlogDirectory("cnblogs_post_body","h2","h3",20);
+}
+</script>
+    </div>
+
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/Jasmine-smi/"><img id="blogLogo" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/Jasmine-smi">Jasmine</a>
+</h1>
+<h2></h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/Jasmine-smi/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/QING~h">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/Jasmine-smi/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 21&nbsp; </span>
+<span id="stats_article_count">文章 - 1&nbsp; </span>
+<span id="stats-comment_count">评论 - 0&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 1016">
+1016</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                <a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/Jasmine-smi/p/17216483.html" title="发布于 2023-03-14 21:48">
+    <span role="heading" aria-level="2">回溯算法解决排列—组合—子集问题</span>
+    
+
+</a><button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h1 id="回溯算法解决排列组合子集问题">回溯算法解决排列—组合—子集问题<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h1>
+<p>无论是<strong>排列</strong>、<strong>组合</strong>还是<strong>子集</strong>问题，就是让你从序列 <code>nums</code> 中以给定规则取若干元素，主要有以下几种变体：</p>
+<ol>
+<li>
+<p>元素<strong>无重不可复选</strong>，即 <code>nums</code> 中的元素都是唯一的，每个元素最多只能被使用一次，这也是最基本的形式。</p>
+</li>
+<li>
+<p>元素<strong>可重不可复选</strong>，即 <code>nums</code> 中的元素可以存在重复，每个元素最多只能被使用一次。</p>
+</li>
+<li>
+<p>元素<strong>无重可复选</strong>，即 <code>nums</code> 中的元素都是唯一的，每个元素可以被使用若干次。</p>
+</li>
+<li>
+<p><s>元素<strong>可重可复选</strong>。但<mark>既然元素可复选，那又何必存在重复元素呢</mark>元素去重之后就等同于形式三，所以这种情况不用考虑。</s></p>
+</li>
+</ol>
+<p>以上所说的问题都可以用这两棵树解决</p>
+<p><a href="https://sm.ms/image/2NG9lHRJYKkAMnE" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/2NG9lHRJYKkAMnE.png" style="zoom: 67%"></a></p>
+<p><a href="https://sm.ms/image/7HO5R2h6PtmBNbE" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/7HO5R2h6PtmBNbE.png" style="zoom: 67%"></a></p>
+<p><strong>组合问题和子集问题其实是等价的；至于之前说的三种变化形式，无非是在这两棵树上剪掉或者增加一些树枝罢了</strong>。</p>
+<h2 id="blogTitle0">组合/子集问题<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3 id="blogTitle1">题目一:子集（元素无重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/subsets/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给你一个整数数组 <code>nums</code> ，数组中的元素 <strong>互不相同</strong> 。返回该数组所有可能的子集（幂集）。</p>
+<p>​	解集 <strong>不能</strong> 包含重复的子集。你可以按 <strong>任意顺序</strong> 返回解集。</p>
+<h4 id="思路">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	求这一整棵树</p>
+<p><a href="https://sm.ms/image/2NG9lHRJYKkAMnE" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/2NG9lHRJYKkAMnE.png" style="zoom: 50%"></a></p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-undefined">我们通过保证元素之间的相对顺序不变来防止出现重复的子集，即：
+</code></pre>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs">dfs(i+<span class="hljs-number">1</span>, nums);
+</code></pre>
+<h4 id="code">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+		dfs(nums, <span class="hljs-number">0</span>);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+		<span class="hljs-comment">// 前序位置，每个节点的值都是一个子集</span>
+		res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(nums[i]);
+			<span class="hljs-comment">// 通过 start 参数控制树枝的遍历，避免产生重复的子集</span>
+			dfs(nums, i + <span class="hljs-number">1</span>);
+			<span class="hljs-comment">// 撤销选择</span>
+			list.removeLast();
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle2">题目二：组合（元素无重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/combinations/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-1">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给定两个整数 <code>n</code> 和 <code>k</code>，返回范围 <code>[1, n]</code> 中所有可能的 <code>k</code> 个数的组合。</p>
+<p>​	你可以按 <strong>任何顺序</strong> 返回答案。</p>
+<h4 id="思路-1">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	求这棵树的一部分内容</p>
+<p><a href="https://sm.ms/image/E7IibmoSyFdBCzW" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/E7IibmoSyFdBCzW.png" style="zoom: 50%"></a></p>
+<h4 id="code-1">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combine</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
+		dfs(n, <span class="hljs-number">1</span>, k);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> k)</span> {
+		<span class="hljs-comment">// base case</span>
+		<span class="hljs-keyword">if</span> (list.size() == k) {
+			<span class="hljs-comment">// 遍历到了第 k 层，收集当前节点的值</span>
+			res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+			<span class="hljs-keyword">return</span>;
+		}
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt;= n; i++) {
+			list.addLast(i);
+			<span class="hljs-comment">// 通过 start 参数控制树枝的遍历，避免产生重复的子集</span>
+			dfs(n, i + <span class="hljs-number">1</span>, k);
+			list.removeLast();
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle3">题目三：子集 II（元素可重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/subsets-ii/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-2">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给你一个整数数组<code>nums</code>，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。</p>
+<p>​	解集<strong>不能</strong>包含重复的子集。返回的解集中，子集可以按<strong>任意顺序</strong>排列。</p>
+<h4 id="思路-2">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	以 <code>nums = [1,2,2]</code> 为例，为了区别两个 <code>2</code> 是不同元素，后面我们写作 <code>nums = [1,2,2']</code>。</p>
+<p>​	按照之前的思路画出子集的树形结构，显然，两条值相同的相邻树枝会产生重复：</p>
+<p><a href="https://sm.ms/image/bq3NgwhuZiGFOzp" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/bq3NgwhuZiGFOzp.png" style="zoom: 67%"></a></p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-matlab">[ 
+    [],
+    [<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>'],
+    [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>'],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>'],
+    [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>']
+]
+</code></pre>
+<p>​	所以我们需要进行剪枝，如果一个节点有多条值相同的树枝相邻，则只遍历第一条，剩下的都剪掉，不要去遍历：</p>
+<p><a href="https://sm.ms/image/PQfco4a1FzMjpxt" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/PQfco4a1FzMjpxt.png" style="zoom: 67%"></a></p>
+<p><strong>体现在代码上，需要先进行排序，让相同的元素靠在一起，如果发现 <code>nums[i] == nums[i-1]</code>，则跳过</strong>：</p>
+<h4 id="code-2">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsetsWithDup</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+		<span class="hljs-comment">// 先排序，让相同的元素靠在一起</span>
+		Arrays.sort(nums);
+		dfs(nums, <span class="hljs-number">0</span>);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+		<span class="hljs-comment">// 前序位置，每个节点的值都是一个子集</span>
+		res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+			<span class="hljs-comment">// 剪枝逻辑，值相同的相邻树枝，只遍历第一条</span>
+			<span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>])
+				<span class="hljs-keyword">continue</span>;
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(nums[i]);
+			<span class="hljs-comment">// 通过 start 参数控制树枝的遍历，避免产生重复的子集</span>
+			dfs(nums, i + <span class="hljs-number">1</span>);
+			<span class="hljs-comment">// 撤销选择</span>
+			list.removeLast();
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle4">题目四：组合总和 II（元素可重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/combination-sum-ii/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-3">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给定一个候选人编号的集合<code>candidates</code>和一个目标数<code>target</code>，找出<code>candidates</code>中所有可以使数字和为<code>target</code>的组合。</p>
+<p>​	<code>candidates</code>中的每个数字在每个组合中只能使用<strong>一次</strong> 。</p>
+<p>​	注意：解集不能包含重复的组合。</p>
+<h4 id="思路-3">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>同<mark>题目三</mark></p>
+<h4 id="code-3">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-type">int</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum2</span><span class="hljs-params">(<span class="hljs-type">int</span>[] candidates, <span class="hljs-type">int</span> target)</span> {
+        <span class="hljs-comment">// 先排序，让相同的元素靠在一起</span>
+		Arrays.sort(candidates);
+		dfs(candidates, target, <span class="hljs-number">0</span>);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] candidates, <span class="hljs-type">int</span> target, <span class="hljs-type">int</span> start)</span> {
+
+		<span class="hljs-keyword">if</span> (now == target) {
+			res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+		}
+
+		<span class="hljs-keyword">if</span> (now &gt; target)
+			<span class="hljs-keyword">return</span>;
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; candidates.length; i++) {
+			<span class="hljs-comment">// 剪枝逻辑，值相同的相邻树枝，只遍历第一条</span>
+			<span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; candidates[i] == candidates[i - <span class="hljs-number">1</span>])
+				<span class="hljs-keyword">continue</span>;
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(candidates[i]);
+			now += candidates[i];
+			<span class="hljs-comment">// 通过 start 参数控制树枝的遍历，避免产生重复的子集</span>
+			dfs(candidates, target, i + <span class="hljs-number">1</span>);
+			<span class="hljs-comment">// 撤销选择</span>
+			list.removeLast();
+			now -= candidates[i];
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle5">题目五：组合总和（元素无重可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/combination-sum/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-4">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给你一个 <strong>无重复元素</strong> 的整数数组<code>candidates</code>和一个目标整数<code>target</code>，找出<code>candidates</code>中可以使数字和为目标数<code>target</code>的 所有 <strong>不同组合</strong> ，并以列表形式返回。你可以按 任意顺序 返回这些组合。</p>
+<p>​	<code>candidates</code>中的 同一个 数字可以 <strong>无限制重复</strong>被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。</p>
+<p>​	对于给定的输入，保证和为<code>target</code>的不同组合数少于 150 个。</p>
+<h4 id="思路-4">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	想解决这种类型的问题，也得回到回溯树上，<strong>我们不妨先思考思考，标准的子集/组合问题是如何保证不重复使用元素的</strong>？</p>
+<p>​	答案在于 <code>backtrack</code> 递归时输入的参数 <code>start</code>：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs"><span class="hljs-comment">// 无重组合的回溯算法框架</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// ...</span>
+        <span class="hljs-comment">// 递归遍历下一层回溯树，注意参数</span>
+        backtrack(nums, i + <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// ...</span>
+    }
+}
+</code></pre>
+<p>​	这个 <code>i</code> 从 <code>start</code> 开始，那么下一层回溯树就是从 <code>start + 1</code> 开始，从而保证 <code>nums[start]</code> 这个元素不会被重复使用：</p>
+<p><a href="https://sm.ms/image/EdljbkGcxDMF2SV" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/EdljbkGcxDMF2SV.png" style="zoom: 50%"></a></p>
+<p>​	那么反过来，如果我想让每个元素被重复使用，我只要把 <code>i + 1</code> 改成 <code>i</code> 即可：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs"><span class="hljs-comment">// 可重组合的回溯算法框架</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// ...</span>
+        <span class="hljs-comment">// 递归遍历下一层回溯树，注意参数</span>
+        backtrack(nums, i);
+        <span class="hljs-comment">// ...</span>
+    }
+}
+</code></pre>
+<p>​	这相当于给之前的回溯树添加了一条树枝，在遍历这棵树的过程中，一个元素可以被无限次使用：</p>
+<p><a href="https://sm.ms/image/EdljbkGcxDMF2SV" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/EdljbkGcxDMF2SV.png" style="zoom: 50%"></a></p>
+<p>​	当然，这样这棵回溯树会永远生长下去，所以我们的递归函数需要设置合适的<code>base case</code>以结束算法，即路径和大于 <code>target</code> 时就没必要再遍历下去了。</p>
+<h4 id="code-4">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-type">int</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] candidates, <span class="hljs-type">int</span> target)</span> {
+		<span class="hljs-keyword">if</span> (candidates.length == <span class="hljs-number">0</span>)
+			<span class="hljs-keyword">return</span> res;
+		dfs(candidates, target, <span class="hljs-number">0</span>);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] candidates, <span class="hljs-type">int</span> target, <span class="hljs-type">int</span> start)</span> {
+
+		<span class="hljs-keyword">if</span> (now == target) {
+			res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+			<span class="hljs-keyword">return</span>;
+		}
+
+		<span class="hljs-keyword">if</span> (now &gt; target)
+			<span class="hljs-keyword">return</span>;
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; candidates.length; i++) {
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(candidates[i]);
+			now += candidates[i];
+			<span class="hljs-comment">// 通过 start 参数控制树枝的遍历，避免产生重复的子集</span>
+			dfs(candidates, target, i);
+			<span class="hljs-comment">// 撤销选择</span>
+			list.removeLast();
+			now -= candidates[i];
+		}
+	}
+}
+</code></pre>
+<h2 id="blogTitle6">排列问题<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<h3 id="blogTitle7">题目一：全排列（元素无重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/permutations/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-5">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给定一个不含重复数字的数组 <code>nums</code> ，返回其 <em>所有可能的全排列</em> 。你可以 <strong>按任意顺序</strong> 返回答案。</p>
+<h4 id="思路-5">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	组合/子集问题使用 <code>start</code> 变量保证元素 <code>nums[start]</code> 之后只会出现 <code>nums[start+1..]</code> 中的元素，通过固定元素的相对位置保证不出现重复的子集。</p>
+<p>​	<strong>但排列问题本身就是让你穷举元素的位置，<code>nums[i]</code> 之后也可以出现 <code>nums[i]</code> 左边的元素，所以之前的那一套玩不转了，需要额外使用 <code>used</code> 数组来标记哪些元素还可以被选择</strong>。</p>
+<p>​	标准全排列可以抽象成如下这棵多叉树：</p>
+<p><a href="https://sm.ms/image/2FoOlcG6PjmwHC1" target="_blank" rel="noopener nofollow"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/2FoOlcG6PjmwHC1.png" style="zoom: 67%"></a></p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-go">用 <span class="hljs-string">`used`</span> 数组标记已经在路径上的元素避免重复选择，然后收集所有叶子节点上的值，就是所有全排列的结果： 
+</code></pre>
+<h4 id="code-5">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// list中的元素会被标记为 true</span>
+	<span class="hljs-type">boolean</span>[] used;
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">permute</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+		used = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[nums.length];
+		dfs(nums);
+		<span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+
+		<span class="hljs-comment">// base case，到达叶子节点</span>
+		<span class="hljs-keyword">if</span> (list.size() == nums.length) {
+			<span class="hljs-comment">// 收集叶子节点上的值</span>
+			res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+			<span class="hljs-keyword">return</span>;
+		}
+
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+			<span class="hljs-comment">// 已经存在 list 中的元素，不能重复选择</span>
+			<span class="hljs-keyword">if</span> (used[i])
+				<span class="hljs-keyword">continue</span>;
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(nums[i]);
+			used[i] = <span class="hljs-literal">true</span>;
+			dfs(nums);
+			<span class="hljs-comment">// 取消选择</span>
+			list.removeLast();
+			used[i] = <span class="hljs-literal">false</span>;
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle8">题目二： 全排列 II （元素可重不可复选）<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p><a href="https://leetcode.cn/problems/permutations-ii/submissions/" target="_blank" rel="noopener nofollow">传送门</a></p>
+<h4 id="题目-6">题目：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	给定一个可包含重复数字的序列 <code>nums</code> ，<em><strong>按任意顺序</strong></em> 返回所有不重复的全排列。</p>
+<h4 id="思路-6">思路：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<p>​	假设输入为 <code>nums = [1,2,2']</code>，标准的全排列算法会得出如下答案：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-matlab">[
+    [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>'],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>',<span class="hljs-number">2</span>],
+    [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>'],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>',<span class="hljs-number">1</span>],
+    [<span class="hljs-number">2</span>',<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>',<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+]
+</code></pre>
+<p>​	显然，这个结果存在重复，比如 <code>[1,2,2']</code> 和 <code>[1,2',2]</code> 应该只被算作同一个排列，但被算作了两个不同的排列。</p>
+<p>​	所以现在的关键在于，如何设计剪枝逻辑，把这种重复去除掉？</p>
+<p>​	<strong>答案是，保证相同元素在排列中的相对位置保持不变</strong>。</p>
+<p>​	比如说 <code>nums = [1,2,2']</code> 这个例子，我保持排列中 <code>2</code> 一直在 <code>2'</code> 前面。</p>
+<p>​	这样的话，你从上面 6 个排列中只能挑出 3 个排列符合这个条件：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="highlighter-hljs hljs language-matlab">[ [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>'],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>'],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>',<span class="hljs-number">1</span>] ]
+</code></pre>
+<p>​	这也就是正确答案。</p>
+<p>​	进一步，如果 <code>nums = [1,2,2',2'']</code>，我只要保证重复元素 <code>2</code> 的相对位置固定，比如说 <code>2 -&gt; 2' -&gt; 2''</code>，也可以得到无重复的全排列结果。</p>
+<p>​	仔细思考，应该很容易明白其中的原理：</p>
+<p>​	<strong>标准全排列算法之所以出现重复，是因为把相同元素形成的排列序列视为不同的序列，但实际上它们应该是相同的；而如果固定相同元素形成的序列顺序，当然就避免了重复</strong>。</p>
+<p>​	那么反映到代码上，你注意看这个剪枝逻辑：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs"><span class="hljs-comment">// 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置</span>
+<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>] &amp;&amp; !used[i - <span class="hljs-number">1</span>]) {
+    <span class="hljs-comment">// 如果前面的相邻相等元素没有用过，则跳过</span>
+    <span class="hljs-keyword">continue</span>;
+}
+<span class="hljs-comment">// 选择 nums[i]</span>
+</code></pre>
+<p>​	<strong>当出现重复元素时，比如输入 <code>nums = [1,2,2',2'']</code>，<code>2'</code> 只有在 <code>2</code> 已经被使用的情况下才会被选择，同理，<code>2''</code> 只有在 <code>2'</code> 已经被使用的情况下才会被选择，这就保证了相同元素在排列中的相对位置保证固定</strong>。</p>
+<h4 id="code-6">Code：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+	List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// 记录回溯算法的递归路径</span>
+	LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+	<span class="hljs-comment">// list中的元素会被标记为 true</span>
+	<span class="hljs-type">boolean</span>[] used;
+
+	<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">permuteUnique</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+		used=<span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[nums.length];
+		Arrays.sort(nums);
+		dfs(nums);
+        <span class="hljs-keyword">return</span> res;
+	}
+
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+
+		<span class="hljs-comment">// base case，到达叶子节点</span>
+		<span class="hljs-keyword">if</span> (list.size() == nums.length) {
+			<span class="hljs-comment">// 收集叶子节点上的值</span>
+			res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(list));
+			<span class="hljs-keyword">return</span>;
+		}
+
+		<span class="hljs-comment">// 回溯算法标准框架</span>
+		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+			<span class="hljs-comment">// 已经存在 list 中的元素，不能重复选择</span>
+			<span class="hljs-keyword">if</span> (used[i])
+				<span class="hljs-keyword">continue</span>;
+            <span class="hljs-comment">// 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置</span>
+			<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>] &amp;&amp; !used[i - <span class="hljs-number">1</span>])
+				<span class="hljs-keyword">continue</span>;
+			<span class="hljs-comment">// 做选择</span>
+			list.addLast(nums[i]);
+			used[i] = <span class="hljs-literal">true</span>;
+			dfs(nums);
+			<span class="hljs-comment">// 取消选择</span>
+			list.removeLast();
+			used[i] = <span class="hljs-literal">false</span>;
+		}
+	}
+}
+</code></pre>
+<h3 id="blogTitle9">排列(元素无重可复选)<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h3>
+<p>​	力扣上没有类似的题目，我们不妨先想一下，<code>nums</code> 数组中的元素无重复且可复选的情况下，会有哪些排列？</p>
+<p>​	比如输入 <code>nums = [1,2,3]</code>，那么这种条件下的全排列共有 3^3 = 27 种：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs">[
+  [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],
+  [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>],
+  [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]
+]
+</code></pre>
+<p>​	<strong>标准的全排列算法利用 <code>used</code> 数组进行剪枝，避免重复使用同一个元素。如果允许重复使用元素的话，直接放飞自我，去除所有 <code>used</code> 数组的剪枝逻辑就行了</strong>。</p>
+<h4 id="code-7">Code:<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h4>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-Java highlighter-hljs hljs"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    LinkedList&lt;Integer&gt; track = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">permuteRepeat</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        backtrack(nums);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-comment">// 回溯算法核心函数</span>
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-comment">// base case，到达叶子节点</span>
+        <span class="hljs-keyword">if</span> (track.size() == nums.length) {
+            <span class="hljs-comment">// 收集叶子节点上的值</span>
+            res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>(track));
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-comment">// 回溯算法标准框架</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-comment">// 做选择</span>
+            track.add(nums[i]);
+            <span class="hljs-comment">// 进入下一层回溯树</span>
+            backtrack(nums);
+            <span class="hljs-comment">// 取消选择</span>
+            track.removeLast();
+        }
+    }
+}
+
+</code></pre>
+<h2 id="blogTitle10">总结：<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<p><strong>形式一、元素无重不可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素最多只能被使用一次</strong>，<code>backtrack</code> 核心代码如下：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs"><span class="hljs-comment">/* 组合/子集问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+    <span class="hljs-comment">// 回溯算法标准框架</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 做选择</span>
+        track.addLast(nums[i]);
+        <span class="hljs-comment">// 注意参数</span>
+        backtrack(nums, i + <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+    }
+}
+
+<span class="hljs-comment">/* 排列问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 剪枝逻辑</span>
+        <span class="hljs-keyword">if</span> (used[i]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 做选择</span>
+        used[i] = <span class="hljs-literal">true</span>;
+        track.addLast(nums[i]);
+
+        backtrack(nums);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+        used[i] = <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre>
+<p><strong>形式二、元素可重不可复选，即 <code>nums</code> 中的元素可以存在重复，每个元素最多只能被使用一次</strong>，其关键在于排序和剪枝，<code>backtrack</code> 核心代码如下：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs">Arrays.sort(nums);
+<span class="hljs-comment">/* 组合/子集问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+    <span class="hljs-comment">// 回溯算法标准框架</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 剪枝逻辑，跳过值相同的相邻树枝</span>
+        <span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 做选择</span>
+        track.addLast(nums[i]);
+        <span class="hljs-comment">// 注意参数</span>
+        backtrack(nums, i + <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+    }
+}
+
+
+Arrays.sort(nums);
+<span class="hljs-comment">/* 排列问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 剪枝逻辑</span>
+        <span class="hljs-keyword">if</span> (used[i]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 剪枝逻辑，固定相同的元素在排列中的相对位置</span>
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>] &amp;&amp; !used[i - <span class="hljs-number">1</span>]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 做选择</span>
+        used[i] = <span class="hljs-literal">true</span>;
+        track.addLast(nums[i]);
+
+        backtrack(nums);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+        used[i] = <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre>
+<p><strong>形式三、元素无重可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素可以被使用若干次</strong>，只要删掉去重逻辑即可，<code>backtrack</code> 核心代码如下：</p>
+<pre class="highlighter-hljs" highlighted="true"><code class="language-java highlighter-hljs hljs"><span class="hljs-comment">/* 组合/子集问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start)</span> {
+    <span class="hljs-comment">// 回溯算法标准框架</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 做选择</span>
+        track.addLast(nums[i]);
+        <span class="hljs-comment">// 注意参数</span>
+        backtrack(nums, i);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+    }
+}
+
+
+<span class="hljs-comment">/* 排列问题回溯算法框架 */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// 做选择</span>
+        track.addLast(nums[i]);
+        backtrack(nums);
+        <span class="hljs-comment">// 撤销选择</span>
+        track.removeLast();
+    }
+}
+</code></pre>
+<h2 id="blogTitle11">参考文章<button class="cnblogs-toc-button" title="显示目录导航" aria-expanded="false"></button></h2>
+<ul>
+<li><a href="https://labuladong.gitee.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-56e11/" target="_blank" rel="noopener nofollow">回溯算法秒杀所有排列-组合-子集问题</a></li>
+</ul>
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block" role="contentinfo">
+
+
+<div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/Jasmine-smi/category/2287072.html" target="_blank">算法 / 回溯算法</a>
+</div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(17216483,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;6b8dfbab-15e4-4a0e-61c4-08da5c229458&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_wechat" href="javascript:void(0);" onclick="shareManager.wechatShare()">微信分享</a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Jasmine-smi/" target="_blank"><img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Jasmine-smi/">QING~h</a>
+            <br>
+            <a href="https://home.cnblogs.com/u/Jasmine-smi/followers/">粉丝 - <span class="follower-count">2</span></a>
+            <a href="https://home.cnblogs.com/u/Jasmine-smi/followees/">关注 - <span class="following-count">7</span></a><br>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow" class="follow-tip">
+                <a href="javascript:void(0);" onclick="follow(&#39;6b8dfbab-15e4-4a0e-61c4-08da5c229458&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(17216483,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(17216483,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script>
+</div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/Jasmine-smi/p/17177106.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/Jasmine-smi/p/17177106.html" data-featured-image="" title="发布于 2023-03-03 21:53">滑动窗口</a>
+    <br>
+    <a href="https://www.cnblogs.com/Jasmine-smi/p/17223947.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/Jasmine-smi/p/17223947.html" data-featured-image="" title="发布于 2023-03-16 19:59">并查集</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date" data-last-update-days="607.4896524788264" data-date-created="BlogServer.Application.Dto.BlogPost.BlogPostDto" data-date-updated="2023-03-14 21:48" aria-expanded="false">2023-03-14 21:48</span>&nbsp;
+<a href="https://www.cnblogs.com/Jasmine-smi">QING~h</a>&nbsp;
+阅读(<span id="post_view_count">117</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=17216483" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(17216483);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: &#39;&#39;, targetType: &#39;blogPost&#39;, targetId: &#39;17216483&#39;, targetLink: &#39;https://www.cnblogs.com/Jasmine-smi/p/17216483.html&#39;, title: &#39;回溯算法解决排列—组合—子集问题&#39; })">举报</a>
+</div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script>
+    var cb_entryId = 17216483, cb_entryCreatedDate = '2023-03-14 21:48', cb_postType = 1, cb_postTitle = '回溯算法解决排列—组合—子集问题';
+    var allowComments = true, cb_blogId = 774022, cb_blogApp = 'Jasmine-smi', cb_blogUserGuid = '6b8dfbab-15e4-4a0e-61c4-08da5c229458';
+    mermaidRender.render()
+    markdown_highlight()
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");    
+</script>
+<a id="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"> 
+        <div class="comment-nav-right">
+            <span id="span_refresh_tips"></span><a href="https://www.cnblogs.com/Jasmine-smi/p/17216483.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/Jasmine-smi/p/17216483.html#top">返回顶部</a>
+        </div>
+    </div>
+    <div id="comment_form_container"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+        <div id="cnblogs_ch"><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-UCanCode&#39;})">【推荐】100%开源！大型工业跨平台软件C++源码提供，建模，组态！</a><br><a href="https://click.aliyun.com/m/1000398630/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-金秋云创季&#39;})">【推荐】阿里云金秋云创季：智惠就在双11，200+款云爆品折上再折</a><br><a href="https://click.ctyun.cn/?track=source_bokeyuan-medium_cps-content_se1271149" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-天翼云&#39;})">【推荐】天翼云爆款云服务器2核2G云超值特惠，一口价35元/1年</a><br><a href="https://market.cnblogs.com/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-阿里云-云大使&#39;})">【推荐】博客园社区专享云产品让利特惠，阿里云新客6.5折上折</a><br><a href="http://ishell.cc/" target="_blank" onclick="gtag(&#39;event&#39;, &#39;click&#39;, {&#39;event_category&#39;: &#39;ad&#39;, &#39;event_label&#39;: &#39;T2-IShell&#39;})">【推荐】轻量又高性能的 SSH 工具 IShell：AI 加持，快人一步</a><br></div>
+    <div id="opt_under_post"></div>
+        <div id="blog_c1" class="under-post-card">
+            <a href="https://market.cnblogs.com/" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C1-阿里云-云大使&#39;)">
+                <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/35695-20241019062048823-95798004.jpg" onload="countCreativeImpressions(&#39;C1-阿里云-云大使&#39;)" alt="">
+                <span id="c1_impression" style="display:none"></span>
+            </a>
+        </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/strick/p/18406625" target="_blank">带团队后的日常思考（十六）</a>
+    <br>
+· <a href="https://www.cnblogs.com/OceanEyes/p/18536237" target="_blank">代码背后的智慧：20条编程感悟</a>
+    <br>
+· <a href="https://www.cnblogs.com/binlovetech/p/18531611" target="_blank">Netty 如何自动探测内存泄露的发生</a>
+    <br>
+· <a href="https://www.cnblogs.com/lmy5215006/p/18529501" target="_blank">.NET Core 泛型底层原理浅谈</a>
+    <br>
+· <a href="https://www.cnblogs.com/xiaoweiyu/p/18531028" target="_blank">解决DDD最大难题-如何划分领域</a>
+    <br>
+</div></div>
+        <div id="cnblogs_c2" class="under-post-card">
+            <a href="https://www.cnblogs.com/cmt/p/18457617" rel="nofollow" target="_blank" onclick="countCreativeClicks(&#39;C2-杭云-华为云代理&#39;)">
+                <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/35695-20241011113008248-579795068.jpg" alt="" onload="countCreativeImpressions(&#39;C2-杭云-华为云代理&#39;)">
+            </a>
+        </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>阅读排行：</b>
+    <br>
+ ·          <a href="https://www.cnblogs.com/kagol/p/18536386" target="_blank">焕然一新！TinyVue 组件库 UI 大升级，更符合现代的审美！</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/HaneDaCafe/p/18536835" target="_blank">Borůvka 算法</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/kagol/p/18537677" target="_blank">TinyVue v3.19.0 正式发布！Tree 组件终于支持虚拟滚动啦！UI 也升级啦，更更符合</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/tangshiye/p/18538268" target="_blank">权限系统：一文搞懂功能权限、数据权限</a>
+        <br>
+ ·          <a href="https://www.cnblogs.com/Can-daydayup/p/18538257" target="_blank">精选2款C#/.NET开源且功能强大的网络通信框架</a>
+        <br>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+        var commentManager = new blogCommentManager();
+        commentManager.renderComments(0);
+        fixPostBody();
+        window.footnoteTipManager.generateFootnoteTips();
+
+            window.tocManager.displayDisableTocTips = false;
+            window.tocManager.generateToc();
+            
+                setTimeout(function() { countViews(cb_blogId, cb_entryId); }, 50);
+            
+            deliverT2();
+            deliverC1C2();
+            loadNewsAndKb();
+            
+                LoadPostCategoriesTags(cb_blogId, cb_entryId);
+            
+            LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+            GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+            loadOptUnderPost();
+            GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+                </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem">
+    <h3 class="catListTitle">公告</h3>
+<div id="blog-news">    
+    <div id="sidebar_news_content">
+<div id="profile_block">
+    昵称：
+    <a href="https://home.cnblogs.com/u/Jasmine-smi/">
+        QING~h
+    </a>
+    <br>
+    园龄：
+    <a href="https://home.cnblogs.com/u/Jasmine-smi/" title="入园时间：2022-07-07">
+        2年4个月
+    </a>
+    <br>
+    粉丝：
+    <a class="follower-count" href="https://home.cnblogs.com/u/Jasmine-smi/followers/">
+        2
+    </a>
+    <br>
+    关注：
+    <a class="folowing-count" href="https://home.cnblogs.com/u/Jasmine-smi/followees/">
+        7
+    </a>
+    <div id="p_b_follow" class="follow-tip">
+<a href="javascript:void(0)" onclick="follow(&#39;6b8dfbab-15e4-4a0e-61c4-08da5c229458&#39;)">+加关注</a></div>
+    <script>getFollowStatus('6b8dfbab-15e4-4a0e-61c4-08da5c229458');</script>
+</div>
+</div>
+</div>
+<script>loadBlogNews();</script>
+
+ 
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/10/11&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2024年11月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2024/12/11&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">27</td>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        2
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            3
+                        </td>
+                            <td class="" align="center">
+                                4
+                            </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            9
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                11
+                            </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            16
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            17
+                        </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            23
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            30
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            7
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div class="mySearch my-search">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Jasmine-smi/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/Jasmine-smi/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/Jasmine-smi/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/Jasmine-smi/comments" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/Jasmine-smi/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/Jasmine-smi/post-categories">随笔分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2270627.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">DFS(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2288723.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">JavaSE(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2248907.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">KMP(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2249097.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">LeetCode(7)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2278910.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">笔记(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2241422.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">动态规划(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2255070.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">二分查找(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2248173.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">快速幂(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2241423.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">算法(17)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2257877.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">题解(8)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2326093.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">源码(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2023/07" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年7月(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2023/04" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年4月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2023/03" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年3月(5)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2023/02" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2023年2月(2)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2022/12" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年12月(3)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/p/archive/2022/11" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">2022年11月(7)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_articlecategory" class="catListArticleCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+    <a class="sidebar-card-title-a" href="https://www.cnblogs.com/Jasmine-smi/article-categories">文章分类</a>
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2237766.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">枚举(1)</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Jasmine-smi/category/2237765.html" style="--cnb-category-item-link-indent-size: calc(0 * 1em)" class="category-item-link" rel="" target="">算法(1)</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+    <h3 class="catListTitle">
+        <a href="https://www.cnblogs.com/Jasmine-smi/most-viewed" class="sidebar-card-title-a">
+    阅读排行榜
+</a>
+
+    </h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/Jasmine-smi/p/16925979.html">
+                            1. 零钱兑换(153)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Jasmine-smi/p/17216483.html">
+                            2. 回溯算法解决排列—组合—子集问题(117)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Jasmine-smi/p/16992208.html">
+                            3. 有序数组中的单一元素(97)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Jasmine-smi/p/16875314.html">
+                            4. 编辑距离(80)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/Jasmine-smi/p/17144372.html">
+                            5. 快速排序(70)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div></div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"></div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">
+            <a href="https://www.cnblogs.com/Jasmine-smi/most-liked" class="sidebar-card-title-a">推荐排行榜</a>
+
+        </h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/Jasmine-smi/p/17177106.html">
+                                1. 滑动窗口(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Jasmine-smi/p/17092403.html">
+                                2. 剪邮票(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Jasmine-smi/p/16992208.html">
+                                3. 有序数组中的单一元素(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div><div id="sidebar_recentcomments" class="sidebar-block"></div>
+
+
+</div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2024 QING~h
+<br><span id="poweredby">Powered by .NET 8.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+    
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8AOXHS93SCdEnLt5HW8VuxS5Nz2d49goOzRFNBJJf8jiHsIuMZWkWtCrNZ5BBAqpJqtn-mvtswsjWYcpDTCr5K9qJMzQdOjFFb8Q97DbILzjvf3VxaJS4HRmmq3qnfEZVCM86wUIr8wPWumGxQAbWjk">
+    <script async="" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/js"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-M95P3TTWJZ');
+</script>
+<script defer="" src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/hm.js.download"></script>
+
+
+<div style="z-index: 998; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: none; flex-direction: column; align-items: center; justify-content: center">
+<div style="background: #fff;padding: 30px; margin: 30px; border-radius: 16px;">
+  <div style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.8); position: absolute; top: -100px; right: -100px; border-radius: 100px"></div>
+  <div style="text-align: center; font-size: 18px; margin-bottom: 10px;">点击右上角即可分享</div>
+  <img src="./回溯算法解决排列—组合—子集问题 - QING~h - 博客园_files/35695-20230906145857937-1471873834.gif" alt="微信分享提示">
+</div>   
+    </div><div id="veepn-breach-alert"><template shadowrootmode="open"><style>.breach-popup{font-family:FigtreeVF,sans-serif;position:fixed;z-index:2147483638;-webkit-font-smoothing:antialiased;text-rendering:optimizelegibility;top:0;left:0;right:0;pointer-events:none;padding-inline:16px;height:0;overflow:visible;color:#222e3a}.breach-popup *{box-sizing:border-box}.breach-popup__inner{background-color:#de4558;width:100%;border-radius:16px;margin-inline:auto;pointer-events:all;position:relative;transition:transform .25s ease-in-out,max-width .25s ease-in-out;transform:translateY(16px);max-height:calc(100svh - 80px);display:flex;flex-direction:column}.breach-popup__header{min-height:32px;display:flex;align-items:center;justify-content:space-between;column-gap:16px;padding:4px;cursor:pointer}.breach-popup__close{cursor:pointer;background-color:transparent;border-style:none;outline:none;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;opacity:.5}.breach-popup__wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease-in-out;overflow:hidden}.breach-popup__content{overflow:hidden;opacity:0;transform:translateY(-10px)}.breach-popup--minimize .breach-popup__inner{max-width:485px;transform:translateY(-100%)}.breach-popup--collapse .breach-popup__inner{max-width:485px}.breach-popup--expand .breach-popup__inner{max-width:1120px}.breach-popup--expand .breach-popup__wrap{grid-template-rows:1fr}.breach-popup--expand .breach-popup__content{opacity:1;transform:translateY(0);transition:transform .25s ease-in-out,opacity .25s ease-in-out;transition-delay:.15s}.breach-popup--expand .breach-popup__header{cursor:default}.breach-info{padding:2px;height:100%}.breach-info__inner{padding:22px 22px 0;background-color:#fff;border-bottom-left-radius:15px;border-bottom-right-radius:15px;height:100%;overflow:auto}.breach-info__alert{font-size:24px;line-height:32px;font-weight:700;margin:0}.breach-info__list{margin-top:24px;display:flex;flex-wrap:wrap;gap:24px}@media only screen and (width >= 992px){.breach-info__list{flex-wrap:nowrap}}.breach-info__item{width:100%}.breach-info__item:nth-child(2){max-width:320px}.breach-info__item:nth-child(3){max-width:200px}.breach-info__title{font-size:18px;font-weight:700;line-height:32px;letter-spacing:-.1px;color:#de4558;margin-top:0;margin-bottom:4px}.breach-info__description{font-size:16px;line-height:28px;letter-spacing:-.1px}.breach-info__description ul{margin:0}.breach-info__actions{display:flex;justify-content:center;padding-top:32px;padding-bottom:22px;background-color:#fff;position:sticky;bottom:0}.breach-info__btn{cursor:pointer;border-style:none;outline:none;display:inline-flex;align-items:center;height:48px;padding-inline:20px;border-radius:12px;text-align:center;font-size:16px;font-weight:700;line-height:28px;letter-spacing:-.1px;color:#fff;background-color:#ff6400}.button-expand{position:absolute;bottom:0;left:50%;transform:translate(-50%,100%);z-index:1}.button-expand__pointer{cursor:pointer}.button-expand__alert{pointer-events:none;transition:opacity .25s ease-in-out}.button-expand__arrow{pointer-events:none;transition:transform .25s ease-in-out,opacity .25s ease-in-out;transform-origin:center}.button-expand--minimize .button-expand__arrow,.button-expand--collapse .button-expand__alert,.button-expand--expand .button-expand__alert{opacity:0}.button-expand--expand .button-expand__arrow{transform:rotate(180deg)}.header-collapse{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:8px;font-size:14px;line-height:20px;letter-spacing:-.1px;color:#fff}.header-expand{display:flex;align-items:center;flex-wrap:wrap;column-gap:4px;padding-left:20px;font-size:14px;font-weight:500;line-height:20px;letter-spacing:-.1px;color:#fff}</style></template></div><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2-variations");font-weight:100 1000;font-display:swap}</style><div class="uprightsideBar" id="uprightsideBar"><div id="sideBarTab"><h2>目录导航</h2></div><div id="sideBarContents" style="display: none;"><dl><dt name="0">组合/子集问题</dt><dd name="1">题目一:子集（元素无重不可复选）</dd><dd name="2">题目二：组合（元素无重不可复选）</dd><dd name="3">题目三：子集II（元素可重不可复选）</dd><dd name="4">题目四：组合总和II（元素可重不可复选）</dd><dd name="5">题目五：组合总和（元素无重可复选）</dd><dt name="6">排列问题</dt><dd name="7">题目一：全排列（元素无重不可复选）</dd><dd name="8">题目二：全排列II（元素可重不可复选）</dd><dd name="9">排列(元素无重可复选)</dd><dt name="10">总结：</dt><dt name="11">参考文章</dt></dl></div></div></body></html>
